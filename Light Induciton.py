@@ -12,7 +12,7 @@ def diff_eqs(y, t):
     mRNA= y[2]
     P= y[3]
 
-    """Set rate constants"""
+    """Set rate constants""" #we made these numbers up we are now looking into fixing them and adding rate equations for the k values
     k1 = 1 # Light induction for EL222F to bind to promoter
     k_1= 0.5 # EL22B unbinds to form EL222F
     k2 = 3 # Transcription of EL222B to form mRNA
