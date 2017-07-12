@@ -21,6 +21,8 @@ def diff_eqs(y, t):
     d2=  6 # Degradation of protein
     L=   1 #Light on then L=1; Light off hten L=0
 
+    # this is me and I`m a rebel
+    
     # Rate of change of EL222F
     dEL222F_dt = -(k1 * EL222F * L) + (k_1* EL222B)
 
