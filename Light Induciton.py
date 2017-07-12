@@ -10,7 +10,7 @@ def diff_eqs(y, t):
     EL222F= y[0] #free
     EL222B= y[1] #bound
     mRNA= y[2]
-    P = y[3]
+    P= y[3]
 
     """Set rate constants"""
     k1 = 1 # Light induction for EL222F to bind to promoter
