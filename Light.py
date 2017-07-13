@@ -1,4 +1,4 @@
-from scipy.integrate import odeint
+rom scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -10,9 +10,9 @@ def diff_eqs(y, t):
     EL222F= y[0] #free
     EL222B= y[1] #bound
     mRNA= y[2]
-    P= y[3]
+    P = y[3]
 
-    """Set rate constants""" #we made these numbers up we are now looking into fixing them and adding rate equations for the k values
+    """Set rate constants"""
     k1 = 1 # Light induction for EL222F to bind to promoter
     k_1= 0.5 # EL22B unbinds to form EL222F
     k2 = 3 # Transcription of EL222B to form mRNA
@@ -64,6 +64,3 @@ if __name__ == "__main__":
     plt.plot(t, sol[:, 3], label='P')
     plt.legend(loc=1, borderaxespad=0)
     plt.show()
-
-
-
