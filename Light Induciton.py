@@ -82,10 +82,9 @@ if __name__ == "__main__":
     sol = odeint(diff_eqs, y0, t)
 
     """plot output"""
-    plt.plot(t, sol[:, 0], label='EHB')
-    plt.plot(t, sol[:, 1], label='mRNA')
-    plt.plot(t, sol[:, 2], label='P')
     plt.plot(t, sol[:, 3], label='PA')
+    plt.ylabel('Concentration of PA (mM)')
+    plt.xlabel('Time (s)')
     plt.legend(loc=1, borderaxespad=0)
     plt.show()
 
