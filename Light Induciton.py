@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 k1_rate_array = []
 
+#k1: rate at which EL222 becomes activated with light to bind to the promoter
+
 
 def light(k,L,n,K1):
 
@@ -41,11 +43,11 @@ PA= y[3] #expression on surface
 
 """Set rate constants""" #we made these numbers up we are now looking into fixing them and adding rate equations for the k values
 
-k2=0.5 # EL22B unbinds to form EL222F
-k3=1  # Translation to form the autotransporter
-d1=2 # Degradation of mRNA
-d2=3 # Degradation of protein
-b=4 # Rate of transport of the protein to the membrane
+k2=0.5 #rate of transcription
+k3=1  #rate of translation
+d1=2 #Degradation of transcript (mRNA)
+d2=3 #Degradation of protein
+b=4 # Rate of transport of the protein to the surface of the membrane
 
     # Rate of EL222 being activated by light and binding to the promoter
 dEHB_dt = (light_intensity * EI ) - (k2* EHB)
@@ -56,7 +58,7 @@ dmRNA_dt = (k2*EHB) - (d1*mRNA)-(k3*mRNA)
     # Rate of translation
 dP_dt = (k3 * mRNA)-(d2*P)-b
 
-    #Rate of expression of the protie
+    #Rate of expression of the protein
 dPA_dt= b*P
 
 """Repack solution in same order as y"""
@@ -69,11 +71,11 @@ if __name__ == "__main__":
     t = np.linspace(0, 800, time_steps)  # Set the timeframe (start_time, stop_time, step)
 
     '''Set initial species concentration values'''
-    EI_0=500          # Starting EL222 concentration in its inactive conformation
-    EHB_0=0           # Starting concentration of EL222
+    EI_0=500          # Starting EL222 concentration in its inactive conformation in the cell
+    EHB_0=0           # Starting concentration of EL222 bound to the promoter
     mRNA_0=0            # Starting mRNA concentration
     P_0 = 0             # Starting protein concentration
-    PA_0=0              #Starting protein expressed on the surface of the
+    PA_0=0              #Starting concentration of protein expressed on the surface of the
 
     '''Pack intial conditions into an array'''
     y0 = [EHB_0, mRNA_0, P_0, PA_0]
