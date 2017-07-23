@@ -8,7 +8,6 @@ k1_rate_array = []
 
 #k1: rate at which EL222 becomes activated with light to bind to the promoter
 
-
 def light(k,L,n,K1):
 
     a=444.6
@@ -36,35 +35,35 @@ def diff_eqs(y, t):
     '''This function contains the differential equations'''
 
     """Unpacking y"""
-EHB= y[0] #bound EL222 to the promoter
-mRNA= y[1] #transcrption
-P= y[2] #translation
-PA= y[3] #expression on surface
+    EHB= y[0] #bound EL222 to the promoter
+    mRNA= y[1] #transcrption
+    P= y[2] #translation
+    PA= y[3] #expression on surface
 
-"""Set rate constants""" #we made these numbers up we are now looking into fixing them and adding rate equations for the k values
+    """Set rate constants""" #we made these numbers up we are now looking into fixing them and adding rate equations for the k values
 
-k2=0.5 #rate of transcription
-k3=1  #rate of translation
-d1=2 #Degradation of transcript (mRNA)
-d2=3 #Degradation of protein
-b=4 # Rate of transport of the protein to the surface of the membrane
+    k2=0.5 #rate of transcription
+    k3=1  #rate of translation
+    d1=2 #Degradation of transcript (mRNA)
+    d2=3 #Degradation of protein
+    b=4 # Rate of transport of the protein to the surface of the membrane
 
     # Rate of EL222 being activated by light and binding to the promoter
-dEHB_dt = (light_intensity * EI ) - (k2* EHB)
+    dEHB_dt = (light_intensity * EI ) - (k2* EHB)
 
     # Rate of transcription
-dmRNA_dt = (k2*EHB) - (d1*mRNA)-(k3*mRNA)
+    dmRNA_dt = (k2*EHB) - (d1*mRNA)-(k3*mRNA)
 
     # Rate of translation
-dP_dt = (k3 * mRNA)-(d2*P)-b
+    dP_dt = (k3 * mRNA)-(d2*P)-b
 
     #Rate of expression of the protein
-dPA_dt= b*P
+    dPA_dt= b*P
 
-"""Repack solution in same order as y"""
-sol = [dEHB_dt, dmRNA_dt, dP_dt, dPA_dt]
+    """Repack solution in same order as y"""
+    sol = [dEHB_dt, dmRNA_dt, dP_dt, dPA_dt]
 
-return sol
+    return sol
 
 if __name__ == "__main__":
     time_steps = 1000 # Number of timepoints to simulate
@@ -83,10 +82,9 @@ if __name__ == "__main__":
     sol = odeint(diff_eqs, y0, t)
 
     """plot output"""
-    plt.plot(t, sol[:, 0], label='EHB')
-    plt.plot(t, sol[:, 1], label='mRNA')
-    plt.plot(t, sol[:, 2], label='P')
     plt.plot(t, sol[:, 3], label='PA')
+    plt.ylabel('Concentration of PA (mM)')
+    plt.xlabel('Time (s)')
     plt.legend(loc=1, borderaxespad=0)
     plt.show()
 
