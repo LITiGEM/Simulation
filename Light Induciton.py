@@ -24,8 +24,7 @@ def light(k,L,n,K1):
 
     return k1
 
-for L in range (0,15):
-    light_intensity = light( 1545, L, 2, 6.554)
+
 
 print k1_rate_array
 
@@ -35,58 +34,69 @@ def diff_eqs(y, t):
     '''This function contains the differential equations'''
 
     """Unpacking y"""
-    EHB= y[0] #bound EL222 to the promoter
-    mRNA= y[1] #transcrption
-    P= y[2] #translation
-    PA= y[3] #expression on surface
+    EI = y[0]
+    EHB= y[1] #bound EL222 to the promoter
+    mRNA= y[2] #transcrption
+    P= y[3] #translation
+    PA= y[4] #expression on surface
 
     """Set rate constants""" #we made these numbers up we are now looking into fixing them and adding rate equations for the k values
 
-    k2=0.5 #rate of transcription
-    k3=1  #rate of translation
-    d1=2 #Degradation of transcript (mRNA)
-    d2=3 #Degradation of protein
-    b=4 # Rate of transport of the protein to the surface of the membrane
+    k2= (666/360) #rate of transcription (nucleotides/min)
+    k3= 0.001 #rate of translation (/min)
+    d1= 1/5
+    d2= 1/5 #Degradation of transcript (mRNA)(/min)
+    d3= 1/20 #Degradation of protein (Half-life of E.coli) (/min)
+    b= 0.03 #Rate of transport of the protein to the surface of the membrane
+
+    dEI_dt =-(light_intensity * EI )
 
     # Rate of EL222 being activated by light and binding to the promoter
-    dEHB_dt = (light_intensity * EI ) - (k2* EHB)
+    dEHB_dt = (light_intensity * EI )-(k2* EHB)-(d1*EHB)
 
     # Rate of transcription
-    dmRNA_dt = (k2*EHB) - (d1*mRNA)-(k3*mRNA)
+    dmRNA_dt = (k2*EHB) - (d2*mRNA)-(k3*mRNA)
 
     # Rate of translation
-    dP_dt = (k3 * mRNA)-(d2*P)-b
+    dP_dt = (k3 * mRNA)-(d3*P)-(b*P)
 
     #Rate of expression of the protein
     dPA_dt= b*P
 
     """Repack solution in same order as y"""
-    sol = [dEHB_dt, dmRNA_dt, dP_dt, dPA_dt]
+    sol = [dEI_dt, dEHB_dt, dmRNA_dt, dP_dt, dPA_dt]
 
     return sol
 
 if __name__ == "__main__":
     time_steps = 1000 # Number of timepoints to simulate
-    t = np.linspace(0, 800, time_steps)  # Set the timeframe (start_time, stop_time, step)
+    t = np.linspace(0, 1200, time_steps)  # Set the timeframe (start_time, stop_time, step)
 
     '''Set initial species concentration values'''
-    EI_0=500          # Starting EL222 concentration in its inactive conformation in the cell
+    EI_0=0.00001          # Starting EL222 concentration in its inactive conformation in the cell
     EHB_0=0           # Starting concentration of EL222 bound to the promoter
     mRNA_0=0            # Starting mRNA concentration
     P_0 = 0             # Starting protein concentration
     PA_0=0              #Starting concentration of protein expressed on the surface of the
 
     '''Pack intial conditions into an array'''
-    y0 = [EHB_0, mRNA_0, P_0, PA_0]
+    y0 = [EI_0, EHB_0, mRNA_0, P_0, PA_0]
 
-    sol = odeint(diff_eqs, y0, t)
+    L_range = [2]
 
-    """plot output"""
-    plt.plot(t, sol[:, 3], label='PA')
-    plt.ylabel('Concentration of PA (mM)')
-    plt.xlabel('Time (s)')
-    plt.legend(loc=1, borderaxespad=0)
+    for L in L_range:
+        print(L)
+        light_intensity = light(1545, L, 2, 6.554)
+        sol = odeint(diff_eqs, y0, t)
+
+        """plot output"""
+        plt.plot(t, sol[:, 0], label='EI')
+        plt.plot(t, sol[:, 1], label='EHB')
+        plt.plot(t, sol[:, 2], label='mRNA')
+        plt.plot(t, sol[:, 3], label='P')
+        plt.plot(t, sol[:, 4], label='PA')
+        plt.ylabel('Concentration of PA (mM)')
+        plt.xlabel('Time (s)')
+        plt.legend(loc=1, borderaxespad=0)
+
     plt.show()
-
-
-
