@@ -24,9 +24,17 @@ def light(k,L,n,K1):
 
     return k1
 
+
+
 print k1_rate_array
 
 EI=200 #initial concentration of EL222
+
+
+def lag(x,k,n)
+
+
+
 
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
@@ -40,7 +48,7 @@ def diff_eqs(y, t):
 
     """Set rate constants""" #we made these numbers up we are now looking into fixing them and adding rate equations for the k values
 
-    k2= (660/360) #rate of transcription (nucleotides/min) 2,802 nucleotides
+    k2= (666/360) #rate of transcription (nucleotides/min)
     k3= 0.001 #rate of translation (/min)
     d1= 1/5
     d2= 1/5 #Degradation of transcript (mRNA)(/min)
@@ -50,25 +58,10 @@ def diff_eqs(y, t):
     dEI_dt =-(light_intensity * EI )
 
     # Rate of EL222 being activated by light and binding to the promoter
-    dEHB_dt = (light_intensity * EI )-(k2*mRNA)-(d1*EHB)
-
-
-
-    #return EHB (After making an array)
-
-    #input Hill equation as a function, where EHB feeds into it
-    #According to the EHB concentration a different constant will be produced
-    #That constant will then be introduced as a factor for the transcription step
-
-    #We want to make a function that contains time as a dependant variable
-    #Where we want to say that the concentration of EHB will affect the time at which
-    #transcrption starts taking place, but not the rate at which transcription takes
-    #place
-
-
+    dEHB_dt = (light_intensity * EI )-(k2* EHB)-(d1*EHB)
 
     # Rate of transcription
-    dmRNA_dt = (k2*mRNA - (d2*mRNA)-(k3*mRNA))
+    dmRNA_dt = (k2*EHB) - (d2*mRNA)-(k3*mRNA)
 
     # Rate of translation
     dP_dt = (k3 * mRNA)-(d3*P)-(b*P)
