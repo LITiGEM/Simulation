@@ -18,6 +18,12 @@ def light(k,L,n,K1):
     #a: Basal expression level of the promoter (microM)
     #L: Light intensity (W/m^2)
 
+    # k:  Maximum expression due to induction
+    # K1: Hill constant (W/m^2)
+    # n: Hill coefficient
+    # a: basal expression level of the promoter
+    # L: light intensity (W/m^2)
+
     k1 =a+((k*(L)^n)/((k)^n+(L)^n))
 
     k1_rate_array.append(k1)
@@ -55,7 +61,6 @@ def diff_eqs(y, t):
     dP_dt = (k3 * mRNA)-(d3*P)
 
     #Rate at which the protein is transferred to the surface of the cell
-
     Km = 5 * ((10)^-3) #(microM/L)
     v = 1/100 #Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to its cytoplasm (1/s)
     n=1-(P/2) #Dimensionless 
@@ -66,10 +71,11 @@ def diff_eqs(y, t):
 
     """Repack solution in same order as y"""
     sol = [dEHB_dt, dmRNA_dt, dP_dt, dPS_dt]
-
+    
     return sol
 
 if __name__ == "__main__":
+
     time_steps = 1000 #Number of timepoints to simulate
     t = np.linspace(0, 5000, time_steps)  #Set the time frame (start_time, stop_time, step)
 
@@ -95,7 +101,7 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 2], label='P')
         plt.plot(t, sol[:, 3], label='PS')
         plt.ylabel('Concentration of PS (microM)')
-        plt.xlabel('Time (min)')
+        plt.xlabel('Time (s)')
         plt.legend(loc=1, borderaxespad=0)
 
     plt.show()
