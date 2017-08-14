@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 
-
 k1_rate_array = []
 
 #k1: Rate at which EL222 becomes activated with light to bind to the promoter
@@ -13,12 +12,12 @@ k1_rate_array = []
 def light(k,L,n,K1):
 
     a=444.6 #Basal expression level of the promoter (microM)
-
+    
     #k: Maximum expression due to induction (a.u.)
     #K1:Hill constant (W/m^2)
     #n: Hill coefficient
     #a: Basal expression level of the promoter (microM)
-    #L: Light intensity (W/m^2)
+    #L: Light intensity (W)
 
     k1 =a+((k*(L)^n)/((k)^n+(L)^n))
 
@@ -92,11 +91,11 @@ if __name__ == "__main__":
         asfont = {'fontname': 'Arial'}
         hfont = {'fontname': 'Helvetica'}
 
-        #plt.plot(t, sol[:, 0])
-        #plt.plot(t, sol[:, 1])
-        #plt.plot(t, sol[:, 2])
+        plt.plot(t, sol[:, 0])
+        plt.plot(t, sol[:, 1])
+        plt.plot(t, sol[:, 2])
         plt.plot(t, sol[:, 3])
-        #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], loc='top left', bbox_to_anchor=(1, 0.5))
+        plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], loc='top left', bbox_to_anchor=(1, 0.5))
 
         plt.legend(['2 W', '6 W', '12 W', '14 W'], loc='upper left')
         plt.title('Figure 1: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
