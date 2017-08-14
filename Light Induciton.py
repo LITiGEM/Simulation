@@ -81,7 +81,7 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [B_0, mRNA_0, P_0, S_0]
 
-    L_range = [ 2, 20, 40, 60]
+    L_range = [ 2 , 20 , 40 , 60 ]
 
     for L in L_range:
         print(L)
