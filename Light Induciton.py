@@ -1,8 +1,6 @@
 from __future__  import division
 from scipy.integrate import odeint
-import matplotlib.ticker as mtick
 import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 
 k1_rate_array = []
@@ -52,7 +50,7 @@ def diff_eqs(y, t):
     # Rate at which the protein is transferred to the surface of the cell
     Km = 5  #(microM/L)
     v = 1 / 10  #Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to its cytoplasm (1/s)
-    n = 1 - (S / (4.08* 10 ** -6))  #Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
+    n = 1 - (S / (2.48* 10 ** -4))  #Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
     b = (P / (P + Km)) * n * v  #Rate at which the protein is transferred to the surface of the cell (1/s)
 
     #Rate of translation
@@ -68,7 +66,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 10 #Number of timepoints to simulate
-    t = np.linspace(0, 4000, time_steps)  #Set the time frame (start_time, stop_time, step)
+    t = np.linspace(0, 400000, time_steps)  #Set the time frame (start_time, stop_time, step)
 
     '''Set initial species concentration values'''
     I = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -80,7 +78,7 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [B_0, mRNA_0, P_0, S_0]
 
-    L_range = [ 2 , 20 , 40 , 60 ]
+    L_range = [ 2 , 40 , 100 , 200 ]
 
     for L in L_range:
         print(L)
@@ -91,14 +89,14 @@ if __name__ == "__main__":
         asfont = {'fontname': 'Arial'}
         hfont = {'fontname': 'Helvetica'}
 
-        plt.plot(t, sol[:, 0])
-        plt.plot(t, sol[:, 1])
-        plt.plot(t, sol[:, 2])
+        #plt.plot(t, sol[:, 0])
+        #plt.plot(t, sol[:, 1])
+        #plt.plot(t, sol[:, 2])
         plt.plot(t, sol[:, 3])
-        plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], loc='top left', bbox_to_anchor=(1, 0.5))
+        #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
 
-        plt.legend(['2 W', '6 W', '12 W', '14 W'], loc='upper left')
-        plt.title('Figure 1: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
+        plt.legend(['1 W/$m^2$', '100 W/$m^2$', '200 W/$m^2$', '300 W/$m^2$'], loc='lower right')
+        plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (s)',**asfont)
         plt.legend(loc=1, borderaxespad=0)
