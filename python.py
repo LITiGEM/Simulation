@@ -52,8 +52,7 @@ def diff_eqs(y, t):
     # Rate at which the protein is transferred to the surface of the cell
     Km = 5  # (microM/L)
     v = 1 / 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to its cytoplasm (1/s)
-    n = 1 - (S / (
-    4.08 * 10 ** -6))  # Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
+    n = 1 - (S / (2.48 * 10 ** -4))  # Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
     b = (P / (P + Km)) * n * v  # Rate at which the protein is transferred to the surface of the cell (1/s)
 
     # Rate of translation
@@ -70,7 +69,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 10  # Number of timepoints to simulate
-    t = np.linspace(0, 400, time_steps)  # Set the time frame (start_time, stop_time, step)
+    t = np.linspace(0, 350000, time_steps)  # Set the time frame (start_time, stop_time, step)
 
     '''Set initial species concentration values'''
     I = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -97,11 +96,10 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 1])
         plt.plot(t, sol[:, 2])
         plt.plot(t, sol[:, 3])
-        plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein', ], loc='upper left',
-                   bbox_to_anchor=(1, 0.5))
+        plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein', ], loc='lower right')
 
 
-        plt.title('Figure 2: Rate kinetics of cellular mechanisms with a light intensity of 14 W/$m^2$',**asfont)
+        plt.title('Figure 1: Rate kinetics of cellular mechanisms with a light intensity of 14 W/$m^2$',**asfont)
         plt.ylabel('Concentration (uM)', **asfont)
         plt.xlabel('Time (s)', **asfont)
         plt.legend(loc=1, borderaxespad=0)
