@@ -35,8 +35,6 @@ def lalala(k1,k2,LIF):
 
     return LIF_temp
 
-
-
 for t in range (0,15):
     LIF_conc = lalala(1,4,LIF_conc)
 

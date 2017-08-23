@@ -1,15 +1,19 @@
+#This is a program we developed to allow future iGEM teams to easily model the transfer of proteins to the surface of cells
+
 from __future__ import division
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
 
-k1_rate_array = []
+#Here the rate at which our Transcription takes place is light dependant, therefore the rate at which our transcription factor is transferred to the promoter
+#of the plasmid is a function of light
 
+k1_rate_array = []
 
 # k1: Rate at which EL222 becomes activated with light to bind to the promoter
 
 def light(k, L, n, K1):
-    a = 444.6  # Basal expression level of the promoter (microM)
+    a = # Basal expression level of the promoter (microM)
 
     # k: Maximum expression due to induction (a.u.)
     # K1:Hill constant (W/m^2)
@@ -24,7 +28,7 @@ def light(k, L, n, K1):
     return k1
 
 
-print k1_rate_array
+print (k1_rate_array)
 
 
 def diff_eqs(y, t):
@@ -38,10 +42,10 @@ def diff_eqs(y, t):
 
     """Set rate constants"""  # we made these numbers up we are now looking into fixing them and adding rate equations for the k values
 
-    k2 = (0.12)  # Rate of transcription per transcript (1/s)
-    k3 = (60 / 660)  # Rate of translation (1/s)
-    d1 = 1 / 300  # Degradation of transcript (1/s)
-    d2 = 1 / 20  # Degradation of protein (Half-life of E.coli) (1/s)
+    k2 = # Rate of transcription per transcript (1/s)
+    k3 = # Rate of translation (1/hr)
+    d1 = # Degradation of transcript (1/hr)
+    d2 = # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light and binding to the promoter
     dB_dt = (light_intensity * (I) ** 2) - (k2 * B)
@@ -50,9 +54,9 @@ def diff_eqs(y, t):
     dmRNA_dt = (k2 * B) - (d1 * mRNA) - (k3 * mRNA)
 
     # Rate at which the protein is transferred to the surface of the cell
-    Km = 5  # (microM/L)
-    v = 1 / 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to its cytoplasm (1/s)
-    n = 1 - (S / (2.48 * 10 ** -4))  # Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
+    Km =  # (microM/L)
+    v =  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to its cytoplasm (1/hr)
+    n = 1 - (S / ())  # Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
     b = (P / (P + Km)) * n * v  # Rate at which the protein is transferred to the surface of the cell (1/s)
 
     # Rate of translation
@@ -66,22 +70,23 @@ def diff_eqs(y, t):
 
     return sol
 
-
 if __name__ == "__main__":
-    time_steps = 10  # Number of timepoints to simulate
-    t = np.linspace(0, 350000, time_steps)  # Set the time frame (start_time, stop_time, step)
+    time_steps = 100000  # Number of timepoints to simulate
+    t = np.linspace(0, 200, time_steps)  # Set the time frame (start_time, stop_time, step)
 
     '''Set initial species concentration values'''
-    I = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
-    B_0 = 0  # Starting concentration of EL222 bound to the promoter (microM/L)
-    mRNA_0 = 0  # Starting mRNA concentration (microM/L)
-    P_0 = 0  # Starting protein concentration (microM/L)
-    S_0 = 0  # Starting concentration of protein expressed on the surface of the cell (microM/L)
+    I = # Initial concentration of EL222 (microM/L)
+    B_0 = # Starting concentration of EL222 bound to the promoter (microM/L)
+    mRNA_0 = # Starting mRNA concentration (microM/L)
+    P_0 = # Starting protein concentration (microM/L)
+    S_0 = # Starting concentration of protein expressed on the surface of the cell (microM/L)
 
     '''Pack intial conditions into an array'''
     y0 = [B_0, mRNA_0, P_0, S_0]
 
-    L_range = [14]
+
+#Here we are defining the light intensity of the light hitting our cells
+    L_range = []
 
     for L in L_range:
         print(L)
@@ -99,9 +104,12 @@ if __name__ == "__main__":
         plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein', ], loc='lower right')
 
 
-        plt.title('Figure 1: Rate kinetics of cellular mechanisms with a light intensity of 14 W/$m^2$',**asfont)
+        #plt.title('Figure 1: Rate kinetics of cellular mechanisms with a light intensity of 14 W/$m^2$',**asfont)
         plt.ylabel('Concentration (uM)', **asfont)
-        plt.xlabel('Time (s)', **asfont)
+        plt.xlabel('Time (hr)', **asfont)
         plt.legend(loc=1, borderaxespad=0)
+        plt.title('Figure 1: Rate kinetics of cellular mechanisms induced with a light intensity of 14 W/$m^2$',
+                  fontsize=10, y=1.08)
+        plt.ticklabel_format(style='sci', axis='Y', scilimits=(0, 0))
 
     plt.show()
