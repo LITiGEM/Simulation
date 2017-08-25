@@ -1,13 +1,13 @@
-from __future__ import division
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-
-k1_rate_array = []
 
 
 # k1: Rate at which EL222 becomes activated with light to bind to the promoter
+# Here we create express k1 in terms of a function of light intensity
+
+k1_rate_array = []
+#The array was created to add the values of k1 as different light intensities are examined
 
 def light(k, L, n, K1):
     a = 444.6  # Basal expression level of the promoter (microM)
@@ -26,6 +26,7 @@ def light(k, L, n, K1):
 
 
 print (k1_rate_array)
+
 
 
 def diff_eqs(y, t):
@@ -67,10 +68,9 @@ def diff_eqs(y, t):
 
     return sol
 
-
 if __name__ == "__main__":
-    time_steps = 10  # Number of timepoints to simulate
-    t = np.linspace(0, 200, time_steps)  # Set the time frame (start_time, stop_time, step)
+    time_steps = 100000  # Number of timepoints to simulate
+    t = np.linspace(0, 200, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     T = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -82,37 +82,30 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [B_0, mRNA_0, P_0, S_0]
 
-    L_range = [14]
+    L_range = [2,14,27,40]
+    # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
     for L in L_range:
         print(L)
         light_intensity = light(1545, L, 2, 6.554)
         sol = odeint(diff_eqs, y0, t)
 
-    data = np.array([sol[:, 3]])
-    data = data.transpose()
-    df = pd.DataFrame(data, index=t, columns=["S"])
-    output_path = "/users/StefaniaTrepekli/" + str(light_intensity) + ".csv"
-    df.to_csv(output_path)
-    print((sol[:, 3])/(6.48 * 10 ** -6))
+        """plot output"""
+        asfont = {'fontname': 'Arial'}
+        hfont = {'fontname': 'Helvetica'}
 
-    """plot output"""
-    asfont = {'fontname': 'Arial'}
-    hfont = {'fontname': 'Helvetica'}
+        #plt.plot(t, sol[:, 0])
+        #plt.plot(t, sol[:, 1])
+        #plt.plot(t, sol[:, 2])
+        plt.plot(t, sol[:, 3])
+        #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
 
-    plt.plot(t, sol[:, 0])
-    plt.plot(t, sol[:, 1])
-    plt.plot(t, sol[:, 2])
-    plt.plot(t, sol[:, 3])
+        plt.legend(['2 W/$m^2$', '14 W/$m^2$', '27 W/$m^2$', '40 W/$m^2$'], loc='lower right')
+        #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
+        plt.ylabel('Concentration (uM)',**asfont)
+        plt.xlabel('Time (hr)',**asfont)
+        plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+        plt.legend(loc=1, borderaxespad=0)
+        plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 
-    plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein', ], loc='lower right')
-
-
-        #plt.title('Figure 1: Rate kinetics of cellular mechanisms with a light intensity of 14 W/$m^2$',**asfont)
-        #plt.ylabel('Concentration (uM)', **asfont)
-        #plt.xlabel('Time (hr)', **asfont)
-        #plt.legend(loc=1, borderaxespad=0)
-        #plt.title('Figure 1: Rate kinetics of cellular mechanisms induced with a light intensity of 14 W/$m^2$', fontsize=10, y=1.08)
-        #plt.ticklabel_format(style='sci', axis='Y', scilimits=(0, 0))
-
-plt.show()
+    plt.show()
