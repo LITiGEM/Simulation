@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 k1_rate_array = []
 #The array was created to add the values of k1 at the different light intensities examined
+copy_number= 0;
 
 def cleavage(K,L,n):
 
