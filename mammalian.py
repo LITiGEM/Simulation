@@ -93,14 +93,14 @@ if __name__ == "__main__":
 
     for L in L_range:
         print(L)
-        light_cleavage = cleavage(L,7.95,1)
+        light_cleavage = cleavage(7.95,L,1)
         sol = odeint(diff_eqs, y0, t)
 
     Pr_range= [50, 100, 150, 200]
 
     for Pr in Pr_range:
         print(Pr)
-        copy_number= copy(Pr,171,1)
+        copy_number= copy(171,Pr,1)
         sol=odeint(diff_eqs, y0, t)
 
         """plot output"""
