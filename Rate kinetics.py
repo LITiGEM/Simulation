@@ -45,7 +45,7 @@ def diff_eqs(y, t):
     d2 = 60 / 20  # Degradation/Dilution of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light and binding to the promoter
-    dB_dt = (light_intensity * (T) ** 2) - (k2 * B)
+    dB_dt = (light_intensity * (T) ** 2 ) - (k2 * B)
 
     # Rate of transcription
     dmRNA_dt = (k2 * B) - (d1 * mRNA) - (k3 * mRNA)
