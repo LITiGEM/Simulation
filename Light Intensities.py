@@ -65,7 +65,7 @@ def diff_eqs(y, t):
     return sol
 
 if __name__ == "__main__":
-    time_steps = 100000  # Number of timepoints to simulate
+    time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, 200, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [B_0, mRNA_0, P_0, S_0]
 
-    L_range = [2,14,27,40]
+    L_range = [0,2,8,14]
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
     for L in L_range:
@@ -96,7 +96,7 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 3])
         #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
 
-        plt.legend(['2 W/$m^2$', '14 W/$m^2$', '27 W/$m^2$', '40 W/$m^2$'], loc='lower right')
+        plt.legend(['0 W/$m^2$', '2 W/$m^2$', '8 W/$m^2$', '14 W/$m^2$'], loc='lower right')
         #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)

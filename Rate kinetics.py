@@ -42,7 +42,7 @@ def diff_eqs(y, t):
     k2 = (108/25)  # Rate of transcription per transcript (1/s)
     k3 = (3600 / 660)  # Rate of translation (1/hr)
     d1 = 60 / 300  # Degradation of transcript (1/hr)
-    d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
+    d2 = 60 / 20  # Degradation/Dilution of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light and binding to the promoter
     dB_dt = (light_intensity * (T) ** 2) - (k2 * B)
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein', ], loc='lower right')
 
 
-        #plt.title('Figure 1: Rate kinetics of cellular mechanisms with a light intensity of 14 W/$m^2$',**asfont)
+    plt.title('Figure 1: Rate kinetics of E.coli cellular mechanisms with a light intensity of 0.04 W/$m^2$',**asfont)
         #plt.ylabel('Concentration (uM)', **asfont)
         #plt.xlabel('Time (hr)', **asfont)
         #plt.legend(loc=1, borderaxespad=0)

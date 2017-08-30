@@ -70,21 +70,19 @@ def diff_eqs(y, t):
 
     # Rate of translation
     n = (1 - (P / (Pt)));
-    dP_dt = (n * b * k3 * mRNA) - (d3 * P)
+    dP_dt = (n*b * k3 * mRNA) - (d3 * P)
 
     """Repack solution in same order as y"""
     sol = [dTF_dt, dmRNA_dt, dP_dt]
 
     return sol
 
-
 if __name__ == "__main__":
-    time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 10,
-                    time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    time_steps = 1000 # Number of timepoints to simulate
+    t = np.linspace(0, 10, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
-    Pt = 9.26 * (10 ** -6)  # Maximum concentration of Protein the cells can produce (umol/L)
+    Pt= 9.26*(10**-6) # Maximum concentration of Protein the cells can produce (umol/L)
     LACE = 500  # Initial concentra0tion of the transmembrane protein complex (units)
     TF_0 = 0  # Starting concentration of free TF in thej cytoplasm
     #TFb_0= 0 # Starting conentration of the TF bound to the promoter
@@ -94,7 +92,7 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [TF_0, mRNA_0, P_0]
 
-    L_range = [0,0.005,0.01,0.015,0.02]
+    L_range = [0.02]
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
     for L in L_range:
@@ -113,18 +111,17 @@ if __name__ == "__main__":
         asfont = {'fontname': 'Arial'}
         hfont = {'fontname': 'Helvetica'}
 
-        #plt.plot(t, sol[:, 0])
-        #plt.plot(t, sol[:, 1])
+        plt.plot(t, sol[:, 0])
+        plt.plot(t, sol[:, 1])
         plt.plot(t, sol[:, 2])
         #plt.plot(t, sol[:, 3])
-        #plt.legend(['Rate of photocleavage', 'mRNA', 'Translated protein'], bbox_to_anchor=(1, 0.5))
+        plt.legend(['Rate of photocleavage', 'Ratse of Transcription', 'Rate of Translation'], bbox_to_anchor=(1, 0.5))
 
-        plt.legend(['0 W/$m^2$', '0.005 W/$m^2$', '0.01 W/$m^2$', '0.015 W/$m^2$', '0.02 W/$m^2$'], loc='lower right')
-        #plt.title('Figure 1: Rate kinetics of cellular mechanisms with a light intensity of 0.02 W/$m^2$',**asfont
+        #plt.legend(['0 W/$m^2$', '0.005 W/$m^2$', '0.01 W/$m^2$', '0.015 W/$m^2$', '0.02 W/$m^2$'], loc='lower right')
+        plt.title('Figure 1: Rate kinetics of mammalian cellular mechanisms with a light intensity of 0.02 W/$m^2$',**asfont)
+
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
-        plt.title('Figure 2: Effect light intensity has on the rate of RFP expression', fontsize=10, y=1.08)
-        #plt.legend(loc=1, borderaxespad=0)
-        plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+        #plt.title('Figure 2: Effect light intensity has on the rate of RFP expression', fontsize=10, y=1.08)
 
     plt.show()
