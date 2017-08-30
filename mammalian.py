@@ -77,8 +77,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 10,
-                    time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    t = np.linspace(0, 100, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     Pt = 9.26 * (10 ** -6)  # Maximum concentration of Protein the cells can produce (umol/L)
