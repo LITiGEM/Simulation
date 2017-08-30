@@ -15,7 +15,7 @@ def cleavage(K,L,n):
     # n: Hill coefficient
     # L: Light intensity (W/m^2)
 
-    k1 = K*((L)**n)/(K+L)
+    k1 = 720+(K*((L)**n)/(K+L))
 
     k1_rate_array.append(k1)
 
@@ -43,20 +43,20 @@ def diff_eqs(y, t):
     '''This function contains the differential equations'''
 
     """Unpacking y"""
-    TF = y[0]  #Bound transbembrane protein by PhoCl
+    TF = y[0]  # Bound transbembrane protein by PhoCl
     #TFb = y[1]  #Transcrption (microM/L)
-    mRNA = y[1]  #Translation (microM/L)
-    P = y[2]  #expression of the RFP protein (microM/L)
+    mRNA = y[1]  # Translation (microM/L)
+    P = y[2]  # Expression of the RFP protein (microM/L)
 
     """Set rate constants"""  # we made these numbers up we are now looking into fixing them and adding rate equations for the k values
 
-    k2 =  452 # Rate of transcription per transcript (1/hr)
+    k2 =  57.6 # Rate of transcription per transcript (1/hr)
     k3 = 12 # Rate of translation (1/hr)
-    d1=60/13 # Degradation of transcription factors (1/hr)
+    d1= 60/13 # Degradation of transcription factors (1/hr)
     d2 = 1.68 # Degradation of mRNA (1/hr)
     d3 = 1.86 # Degradation of translated protein (1/hr)
-    a = 400 # Rate of transport of TF from cytoplasm to the nucleus (molecules/pore/second)
-    b = 300 # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
+    a = 190.8 # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
+    b = 3 # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
 
     # Rate of PhoCL being cleaved by light and transmembrane protein complex being released in the cytoplasm
     dTF_dt = (light_cleavage*LACE)-(d1*TF)-(a*TF)
@@ -66,11 +66,14 @@ def diff_eqs(y, t):
     #dTFb_dt = (TF*copy_number*a)
 
     # Rate of transcription
+
     dmRNA_dt = (k2*TF)-(d2*mRNA)-(b*mRNA)
 
     # Rate of translation
+    Pt = 9.26 * (10 ** -6)  # Maximum concentration of Protein the cells can produce (umol/L)
     n = (1 - (P / (Pt)));
-    dP_dt = (n*b * k3 * mRNA) - (d3 * P)
+
+    dP_dt = (n*b*k3*mRNA)-(d3*P)
 
     """Repack solution in same order as y"""
     sol = [dTF_dt, dmRNA_dt, dP_dt]
@@ -78,16 +81,16 @@ def diff_eqs(y, t):
     return sol
 
 if __name__ == "__main__":
-    time_steps = 1000 # Number of timepoints to simulate
-    t = np.linspace(0, 10, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    time_steps = 100 # Number of timepoints to simulate
+    t = np.linspace(0, 5, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
-    Pt= 9.26*(10**-6) # Maximum concentration of Protein the cells can produce (umol/L)
-    LACE = 500  # Initial concentra0tion of the transmembrane protein complex (units)
+    LACE = 1.54*(10**-7)  # Initial concentra0tion of the transmembrane protein complex (units)
     TF_0 = 0  # Starting concentration of free TF in thej cytoplasm
     #TFb_0= 0 # Starting conentration of the TF bound to the promoter
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     P_0 = 0  # Starting protein concentration (microM/L)
+
 
     '''Pack intial conditions into an array'''
     y0 = [TF_0, mRNA_0, P_0]
@@ -115,13 +118,14 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 1])
         plt.plot(t, sol[:, 2])
         #plt.plot(t, sol[:, 3])
-        plt.legend(['Rate of photocleavage', 'Ratse of Transcription', 'Rate of Translation'], bbox_to_anchor=(1, 0.5))
+        #plt.legend(['Rate of photocleavage', 'Rate of Transcription', 'Rate of Translation'], bbox_to_anchor=(1, 0.5))
 
         #plt.legend(['0 W/$m^2$', '0.005 W/$m^2$', '0.01 W/$m^2$', '0.015 W/$m^2$', '0.02 W/$m^2$'], loc='lower right')
-        plt.title('Figure 1: Rate kinetics of mammalian cellular mechanisms with a light intensity of 0.02 W/$m^2$',**asfont)
+        plt.title('Rate kinetics of mammalian cellular mechanisms with a light intensity of 0.02 W/$m^2$', fontsize=10, y=1.08)
 
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
+        plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
         #plt.title('Figure 2: Effect light intensity has on the rate of RFP expression', fontsize=10, y=1.08)
 
     plt.show()
