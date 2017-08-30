@@ -14,11 +14,8 @@ def cleavage(K,L,n):
     # K:Hill constant (W/m^2)
     # n: Hill coefficient
     # L: Light intensity (W/m^2)
-
     k1 = K*((L)**n)/(K+L)
-
     k1_rate_array.append(k1)
-
     return k1
 
 print (k1_rate_array)
@@ -103,7 +100,6 @@ if __name__ == "__main__":
         sol = odeint(diff_eqs, y0, t)
 
    # Pr_range= [50]
-
     #for Pr in Pr_range:
        # print(Pr)
        # copy_number= copy(171,Pr,1)
