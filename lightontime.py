@@ -16,7 +16,6 @@ def pulsing(k1,t):
 
         return k1_pulse
 
-
 for t in range (0,86400):
     light_pulsing = pulsing( 458.4, t)
 
