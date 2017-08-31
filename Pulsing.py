@@ -1,24 +1,18 @@
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
-import math
-
-# k1: Rate at which EL222 becomes activated with light to bind to the promoter
-# Here we create express k1_induced in terms of a function of light intensity
+from itertools import cycle
 
 light_pulsing=0
-
-k1_pulsing_array =[]
-k1=458.4
-
-def pulsing(k1,t):
-
-        if t>43200 and t<0:
-            k1_pulse =0
-        else:
-            k1_pulse=k1
-        k1_pulsing_array.append(k1_pulse)
-        return k1_pulse
+#k1_pulsing_array =[]
+#k1=458.4
+#def pulsing(t):
+ #       if t>43200 or t<0:
+  #          k1_pulse =0
+   #     else:
+    #        k1_pulse=k1
+     #   k1_pulsing_array.append(k1_pulse)
+      #  return k1_pulse
 
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
@@ -30,7 +24,6 @@ def diff_eqs(y, t):
     S = y[3] # Expression on surface (microM/L)
 
     """Set rate constants"""  # we made these numbers up we are now looking into fixing them and adding rate equations for the k values
-
     k2 = (108/25) # Rate of transcription per transcript (1/hr)
     k3 = (3600/660) # Rate of translation (1/hr)
     d1 = 60/300 # Degradation of transcript (1/hr)
@@ -60,8 +53,8 @@ def diff_eqs(y, t):
     return sol
 
 if __name__ == "__main__":
-    time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 96000, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    #time_steps = 1000  # Number of timepoints to simulate
+    t = np.linspace(0, 80000, 4)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     T = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -81,22 +74,31 @@ if __name__ == "__main__":
         #light_intensities = light(1545, L, 2, 6.554)
         #sol = odeint(diff_eqs, y0, t)
 
-    t_range = [0, 12000, 48000, 96000]
+    #t_range = [0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000]
 
-    for t in t_range:
-        #print(t)
-        light_pulsing=pulsing(458.4,t)
+    #for t in t_range:
+        # print(t)
+        #   light_pulsing=pulsing(t)
+        #  print(light_pulsing)
+        #sol = odeint(diff_eqs, y0, t)
+
+    light_pulsing_is = np.array([458,458,458,458,0,0,0,0,0])
+    # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
+
+    for light_pulsing in light_pulsing_is:
+        # print(L)
+        # light_intensities = light(1545, L, 2, 6.554)
         print(light_pulsing)
-        sol=odeint(diff_eqs, y0, t)
+        sol = odeint(diff_eqs, y0, t)
 
-        """plot output"""
-        asfont = {'fontname': 'Arial'}
-        hfont = {'fontname': 'Helvetica'}
+    """plot output"""
+    asfont = {'fontname': 'Arial'}
+    hfont = {'fontname': 'Helvetica'}
 
-        plt.plot(t, sol[:, 0])
-        plt.plot(t, sol[:, 1])
-        plt.plot(t, sol[:, 2])
-        plt.plot(t, sol[:, 3])
+    plt.plot(t, sol[:, 0])
+        #plt.plot(t, sol[:, 1])
+        #plt.plot(t, sol[:, 2])
+        #plt.plot(t, sol[:, 3])
         #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
 
         #plt.legend(['0 W/$m^2$', '2 W/$m^2$', '8 W/$m^2$', '14 W/$m^2$'], loc='lower right')
