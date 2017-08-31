@@ -6,10 +6,8 @@ k1=458.4
 
 def pulsing(t):
 
-        if t>43200:
+        if t>43200 or t<0:
             k1_pulse =0
-        elif t<0:
-            k1_pulse=0
         else:
             k1_pulse=k1
         k1_pulsing_array.append(k1_pulse)
