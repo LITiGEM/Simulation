@@ -16,7 +16,6 @@ light_pulsing=0
 
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
-    light_pulsing= np.array([458, 458, 458, 458, 0, 0, 0, 0, 0])
 
     """Unpacking y"""
     B = y[0] # Bound EL222 to the promoter (microM/L)
@@ -75,20 +74,22 @@ if __name__ == "__main__":
         #light_intensities = light(1545, L, 2, 6.554)
         #sol = odeint(diff_eqs, y0, t)
 
-    t_range = [0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000]
+    #t_range = [0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000]
 
-    for t in t_range:
+    #for t in t_range:
         # print(t)
-        #light_pulsing=pulsing(t)
+        #   light_pulsing=pulsing(t)
         #  print(light_pulsing)
-        sol = odeint(diff_eqs, y0, t)
+        #sol = odeint(diff_eqs, y0, t)
 
+    light_pulsing_range = np.array([458,458,458,458,0,0,0,0,0])
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
-    #for light_pulsing in light_pulsing_range:
+
+    for light_pulsing in light_pulsing_range:
         # print(L)
         # light_intensities = light(1545, L, 2, 6.554)
-        #print(light_pulsing)
-        #sol = odeint(diff_eqs, y0, t)
+        print(light_pulsing)
+        sol = odeint(diff_eqs, y0, t)
 
     """plot output"""
     asfont = {'fontname': 'Arial'}
@@ -99,6 +100,7 @@ if __name__ == "__main__":
         #plt.plot(t, sol[:, 2])
         #plt.plot(t, sol[:, 3])
         #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
+
         #plt.legend(['0 W/$m^2$', '2 W/$m^2$', '8 W/$m^2$', '14 W/$m^2$'], loc='lower right')
         #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
         #plt.ylabel('Concentration (uM)',**asfont)
