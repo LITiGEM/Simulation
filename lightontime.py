@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 light_pulsing=0
 
 k1_pulsing_array =[]
@@ -17,4 +19,9 @@ def pulsing(k1,t):
         return k1_pulse
 
 print(k1_pulsing_array)
+
+plt.plot(k1_pulsing_array)
+plt.ylabel('k$_1$')
+plt.xlabel('Time')
+plt.show()
 
