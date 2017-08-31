@@ -23,8 +23,6 @@ def light(k, L, n, K1):
 
     return k1
 
-print (k1_rate_array)
-
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
 
@@ -84,6 +82,7 @@ if __name__ == "__main__":
     for L in L_range:
         print(L)
         light_intensity = light(1545, L, 2, 6.554)
+        #print(light_intensity)
         sol = odeint(diff_eqs, y0, t)
 
         """plot output"""
