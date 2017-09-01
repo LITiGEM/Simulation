@@ -1,22 +1,32 @@
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
-from itertools import cycle
+import math
+
+k1_pulsing_array =[]
 
 light_pulsing=0
-#k1_pulsing_array =[]
-#k1=458.4
-#def pulsing(t):
- #       if t>43200 or t<0:
-  #          k1_pulse =0
-   #     else:
-    #        k1_pulse=k1
-     #   k1_pulsing_array.append(k1_pulse)
-      #  return k1_pulse
+k1=458.4
+k1_pulse=0
+
+def pulsing(t2):
+    ON=12/24
+
+    if t2>43200:
+            k1_pulse=0
+
+    elif t2<0:
+            k1_pulse=0
+
+    else:
+            k1_pulse=k1*(math.sin(((t2/86400-math.floor(t2/86400)))*math.pi/(1-ON)))
+
+    #k1_pulsing_array.append(k1_pulse)
+
+    return k1_pulse
 
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
-    light_pulsing= np.array([458, 458, 458, 458, 0, 0, 0, 0, 0])
 
     """Unpacking y"""
     B = y[0] # Bound EL222 to the promoter (microM/L)
@@ -29,7 +39,8 @@ def diff_eqs(y, t):
     k3 = (3600/660) # Rate of translation (1/hr)
     d1 = 60/300 # Degradation of transcript (1/hr)
     d2 = 60/20 # Degradation of protein (Half-life of E.coli) (1/hr)
-
+    d3= 60/20 #half-life of intimin (1/hr)
+    light_pulsing = pulsing(t)
     # Rate of EL222 being activated by light and binding to the promoter
     dB_dt = (light_pulsing* (T) ** 2) - (k2 * B)
 
@@ -46,16 +57,17 @@ def diff_eqs(y, t):
     dP_dt = (k3 * mRNA) - (d2 * P) - (b * P)
 
     # Rate of expression of the protein
-    dS_dt = (b * P)
+    dS_dt = (b * P)-(d3*S)
 
     """Repack solution in same order as y"""
-    sol = [dB_dt, dmRNA_dt, dP_dt, dS_dt]
+
+    sol= [dB_dt, dmRNA_dt, dP_dt, dS_dt]
 
     return sol
 
 if __name__ == "__main__":
     #time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 80000, 4)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    t = np.linspace(0, 500000, 100000)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     T = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -69,17 +81,16 @@ if __name__ == "__main__":
 
     #L_range = [14]
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
-
     #for L in L_range:
         #print(L)
         #light_intensities = light(1545, L, 2, 6.554)
         #sol = odeint(diff_eqs, y0, t)
 
-    t_range = [0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000]
+    t2_range = np.array([0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000])
 
-    for t in t_range:
+    for t2 in t2_range:
         # print(t)
-        #light_pulsing=pulsing(t)
+        light_pulsing=pulsing(t2)
         #  print(light_pulsing)
         sol = odeint(diff_eqs, y0, t)
 
@@ -94,10 +105,9 @@ if __name__ == "__main__":
     asfont = {'fontname': 'Arial'}
     hfont = {'fontname': 'Helvetica'}
 
-    plt.plot(t, sol[:, 0])
-        #plt.plot(t, sol[:, 1])
-        #plt.plot(t, sol[:, 2])
-        #plt.plot(t, sol[:, 3])
+    plt.plot(t, sol[:, 1])
+    plt.plot(t, sol[:, 2])
+    plt.plot(t, sol[:, 3])
         #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
         #plt.legend(['0 W/$m^2$', '2 W/$m^2$', '8 W/$m^2$', '14 W/$m^2$'], loc='lower right')
         #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
