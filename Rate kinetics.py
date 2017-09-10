@@ -83,7 +83,7 @@ if __name__ == "__main__":
     y0 = [EL222dimer_0, mRNA_0, Intiminintracellular_0, Intiminsurface_0]
 
     # We used the optimum light intensity to find the rate limiting step within its rate kinetics
-    L_range = [150]
+    L_range = [70]
 
     for L in L_range:
         print(L)
