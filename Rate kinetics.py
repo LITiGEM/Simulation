@@ -101,7 +101,7 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 2])
         plt.plot(t, sol[:, 3])
 
-    plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein', ],
+    plt.legend(['EL222 dimer bound to promoter', 'mRNA', 'Translated Intimin', 'Surface-expressed Intimin', ],
                    loc='lower right')
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
