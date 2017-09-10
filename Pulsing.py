@@ -4,15 +4,16 @@ import matplotlib.pyplot as plt
 from itertools import cycle
 
 light_pulsing=0
-#k1_pulsing_array =[]
-#k1=458.4
-#def pulsing(t):
- #       if t>43200 or t<0:
-  #          k1_pulse =0
-   #     else:
-    #        k1_pulse=k1
-     #   k1_pulsing_array.append(k1_pulse)
-      #  return k1_pulse
+k1_pulsing_array =[]
+k1=458.4
+def pulsing(t):
+    for t in np.linspace(0, 80000, 458):
+        if t == 10000 or t== 20000 or t== 40000 or t== 60000 or t==80000:
+            k1_pulse=0
+        else:
+            k1_pulse=k1
+    k1_pulsing_array.append(k1_pulse)
+    return k1_pulse
 
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
@@ -82,13 +83,14 @@ if __name__ == "__main__":
         #  print(light_pulsing)
         #sol = odeint(diff_eqs, y0, t)
 
-    light_pulsing_range = np.array([458,458,458,458,0,0,0,0,0])
+    light_pulsing_range = np.array([458, 458, 458, 458, 0, 0, 0, 0, 0])
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
     for light_pulsing in light_pulsing_range:
         # print(L)
         # light_intensities = light(1545, L, 2, 6.554)
         print(light_pulsing)
+        light_pulsing=pulsing(light_pulsing_range)
         sol = odeint(diff_eqs, y0, t)
 
     """plot output"""
@@ -96,10 +98,10 @@ if __name__ == "__main__":
     hfont = {'fontname': 'Helvetica'}
 
     plt.plot(t, sol[:, 0])
-        #plt.plot(t, sol[:, 1])
-        #plt.plot(t, sol[:, 2])
-        #plt.plot(t, sol[:, 3])
-        #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
+    plt.plot(t, sol[:, 1])
+    plt.plot(t, sol[:, 2])
+    plt.plot(t, sol[:, 3])
+    plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
 
         #plt.legend(['0 W/$m^2$', '2 W/$m^2$', '8 W/$m^2$', '14 W/$m^2$'], loc='lower right')
         #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )

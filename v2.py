@@ -105,6 +105,9 @@ if __name__ == "__main__":
     asfont = {'fontname': 'Arial'}
     hfont = {'fontname': 'Helvetica'}
 
+    plt.style.use('ggplot')
+    plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+    plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
     plt.plot(t, sol[:, 1])
     plt.plot(t, sol[:, 2])
     plt.plot(t, sol[:, 3])

@@ -21,6 +21,7 @@ def light(k, L, n, K1):
 
     k1_rate_array.append(k1)
 
+
     return k1
 
 def diff_eqs(y, t):
@@ -31,6 +32,7 @@ def diff_eqs(y, t):
     mRNA = y[1]  # Transcrption (microM/L)
     Intiminintracellular = y[2]  # Translation (microM/L)
     Intiminsurface = y[3]  # Expression of Intimin on the surface of the cells (microM/L)
+
 
     """Set rate constants""" # Most values were collected from papers, we are finessing them by adding
     # values our Wet Lab obtained from our experiments

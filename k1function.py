@@ -22,7 +22,7 @@ def light(k,L,n,K1):
 for L in range (0,15):
     light_intensity = light( 1545, L, 2, 6.554)
 
-print k1_rate_array
+print(k1_rate_array)
 
 plt.plot(k1_rate_array)
 plt.ylabel('k$_1$')
