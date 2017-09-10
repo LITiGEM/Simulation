@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     # Once we selected our range of light intensities we inputted them into our initial function to calculate the value
     # of k1 and then inputted the values of k1 into our differential equations
-    L_range = [0,50,100,150,200,250,300]
+    L_range = [0,10,20,30,40,50,60,70]
 
     for L in L_range:
         print(L)
@@ -100,8 +100,8 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 3])
 
         # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-        plt.legend(['0 W/$m^2$', '50 W/$m^2$', '100 W/$m^2$', '150 W/$m^2$','200 W/$m^2$', '250 W/$m^2$', '300 W/$m^2$'],
-                   loc='lower right')
+        plt.legend(['0 W/$m^2$', '10 W/$m^2$', '20 W/$m^2$', '30 W/$m^2$','40 W/$m^2$', '50 W/$m^2$', '60 W/$m^2$',
+                    '70 W/$m^2$'], loc='lower right')
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
         plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
