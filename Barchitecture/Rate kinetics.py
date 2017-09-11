@@ -21,7 +21,6 @@ def light(k, L, n, K1):
 
     k1_rate_array.append(k1)
 
-
     return k1
 
 def diff_eqs(y, t):
@@ -32,7 +31,6 @@ def diff_eqs(y, t):
     mRNA = y[1]  # Transcrption (microM/L)
     Intiminintracellular = y[2]  # Translation (microM/L)
     Intiminsurface = y[3]  # Expression of Intimin on the surface of the cells (microM/L)
-
 
     """Set rate constants""" # Most values were collected from papers, we are finessing them by adding
     # values our Wet Lab obtained from our experiments
@@ -47,6 +45,8 @@ def diff_eqs(y, t):
 
     # Rate of transcription
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
+
+    print(EL222dimer)
 
     # Rate at which the protein is transferred to the surface of the cell
     Km = 5  # (microM/L)
@@ -84,9 +84,8 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [EL222dimer_0, mRNA_0, Intiminintracellular_0, Intiminsurface_0]
 
-    # Once we selected our range of light intensities we inputted them into our initial function to calculate the value
-    # of k1 and then inputted the values of k1 into our differential equations
-    L_range = [0,10,20,30,40,50,60,70]
+    # We used the optimum light intensity to find the rate limiting step within its rate kinetics
+    L_range = [70]
 
     for L in L_range:
         print(L)
@@ -99,15 +98,18 @@ if __name__ == "__main__":
         asfont = {'fontname': 'Arial'}
 
         plt.style.use('ggplot')
-        plt.plot(t, sol[:, 3])
+        #plt.plot(t, sol[:, 0])
+        plt.plot(t, sol[:, 1])
+        #plt.plot(t, sol[:, 2])
+        #plt.plot(t, sol[:, 3])
 
-        # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-        plt.legend(['0 W/$m^2$', '10 W/$m^2$', '20 W/$m^2$', '30 W/$m^2$','40 W/$m^2$', '50 W/$m^2$', '60 W/$m^2$',
-                    '70 W/$m^2$'], loc='lower right')
-        plt.ylabel('Concentration (uM)',**asfont)
-        plt.xlabel('Time (hr)',**asfont)
-        plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
-        plt.legend(loc=1, borderaxespad=0)
-        plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+    plt.legend(['EL222 dimer bound to promoter', 'mRNA', 'Translated Intimin', 'Surface-expressed Intimin', ],
 
-    plt.show()
+                   loc='lower right')
+    plt.ylabel('Concentration (uM)',**asfont)
+    plt.xlabel('Time (hr)',**asfont)
+    #plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+    plt.legend(loc=1, borderaxespad=0)
+    plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+
+plt.show()
