@@ -1,35 +1,32 @@
 from SALib.sample import saltelli
 from SALib.analyze import sobol
-from SALib.test_functions import Ishigami
 import numpy as np
-
 
 b_array=[]
 
-def sensitivity(P,km,v)
+def sensitivity(km,v):
 
-    n=(1-(S/((6.48 * 10 ** -6))))
-
+    P=6.1564400012e-06
+    n=(1-((0.99553156316)/((6.48 * 10 ** -6))))
     b=(P / (P + km)) * n * v
-
-    b_array_append(b)
+    b_array.append(b)
 
     return b
 
-
-
-
-
-
-
-
-
-    Surface = (b * Intiminintracellular) - d2 * (Intiminsurface)
-
-
-
 problem={
-    'num_vars':3,
-    'names': ['x1','x2','x3'],
-    'bounds': [[0,5]],[0,5]],[0,5]]
+    'num_vars':2,
+    'names': ['km','v'],
+    'bounds': [[0,10],[5000,10000]]
 }
+
+#Generate samples
+param_values=saltelli.sample(problem,1000,calc_second_order=False)
+
+#Run Model
+Y=sensitivity(param_values, param_values)
+
+#Perform analysis
+
+Si=sobol.analyze(problem,Y,print_to_console=True)
+
+

@@ -58,6 +58,9 @@ def diff_eqs(y, t):
     # Rate of translation
     dIntiminintracellular_dt = (k3 * mRNA) - (d2 * Intiminintracellular) - (b * Intiminintracellular)
 
+    print(b)
+
+
     # Rate of expression of the protein on the surface of the cell
     dIntiminsurface_dt = (b * Intiminintracellular) -d2*(Intiminsurface)
 
