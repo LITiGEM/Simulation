@@ -23,7 +23,7 @@ problem={
 param_values=saltelli.sample(problem,1000,calc_second_order=False)
 
 #Run Model
-Y=sensitivity(param_values, param_values)
+Y=sensitivity(param_values)
 
 #Perform analysis
 
