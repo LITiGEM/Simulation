@@ -110,8 +110,8 @@ if __name__ == "__main__":
     plt.ylabel('Concentration (uM)', **asfont)
     plt.ylim(0)
     plt.xlabel('Time (hr)', **asfont)
-    plt.xlim(0, run_time)
-    plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+    plt.xlim(0, run_time);
+    plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08);
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 
