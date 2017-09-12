@@ -14,7 +14,7 @@ def light(k, L, n, K1):
     # k: Maximum expression due to induction (a.u.)
     # K1:Hill constant (W/m^2)
     # n: Hill coefficient (dimensionless)
-    # a: Basal expression level of the promoter (microM)
+    # a: Basal expression level of the promoter (a. u)
     # L: Light intensity (W)
 
     k1 = a + ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
@@ -23,7 +23,7 @@ def light(k, L, n, K1):
 
     return k1
 
-def diff_eqs(y, t):
+def diff_eqs(y, t, km):
     '''This function contains the differential equations'''
 
     """Unpacking y"""
@@ -37,7 +37,7 @@ def diff_eqs(y, t):
 
     k2 = (108 / 25)  # Rate of transcription per transcript (1/hr)
     k3 = (3600 / 660)  # Rate of translation (1/hr)
-    d1 = 60 / 300  # Degradation of transcript (1/hr)
+    d1 = 60 / 20  # Degradation of transcript (1/hr)
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
@@ -47,22 +47,14 @@ def diff_eqs(y, t):
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
 
     # Rate at which the protein is transferred to the surface of the cell
-    Km = 1 # (microM/L)
-    v = 36000/10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
+    v = 115200 / 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
     # its cytoplasm (1/hr)
-    n = 1 - (Intiminsurface / (2.48 ** -4))  # Representing the space available for more proteins on the surface
-    # of the cell in the form of a ratio (Dimensionless)
-    b = ((Intiminintracellular*v) / (Intiminintracellular + Km)) * n   # Rate at which the protein is transferred to the
-    # surface of the cell (1/s)
+    n = 1 - (Intiminsurface / (6.48 * 10 ** -6))  # Representing the space available for more proteins on the surface
 
-    # Rate of translation
-    dIntiminintracellular_dt = (k3 * mRNA) - (d2 * Intiminintracellular) - (b * Intiminintracellular)
-
-    print(Intiminintracellular)
-
+    dIntiminintracellular_dt = ((((Intiminintracellular)**2)*(-d2-v)*n)+(Intiminintracellular*((mRNA*k3)-(d2*Km)))+((mRNA*k3)*Km))/(Km+Intiminintracellular)
 
     # Rate of expression of the protein on the surface of the cell
-    dIntiminsurface_dt = (b * Intiminintracellular)-d2*(Intiminsurface)
+    dIntiminsurface_dt = (((Intiminintracellular*v / (Intiminintracellular + Km)) * n)* Intiminintracellular) -d2*(Intiminsurface)
 
     """Repack solution in same order as y"""
 
@@ -71,8 +63,9 @@ def diff_eqs(y, t):
     return sol
 
 if __name__ == "__main__":
-    time_steps = 2  # Number of timepoints to simulate
-    t = np.linspace(0, 10, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    time_steps = 1000  # Number of timepoints to simulate
+    t = np.linspace(0, 24, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    Km= np.linspace(1,10,10)
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -84,34 +77,29 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [EL222dimer_0, mRNA_0, Intiminintracellular_0, Intiminsurface_0]
 
-    # We used the optimum light intensity to find the rate limiting step within its rate kinetics
-    L_range = [70]
+    # Once we selected our range of light intensities we inputted them into our initial function to calculate the value
+    # of k1 and then inputted the values of k1 into our differential equations
+
+    L_range = [0,18,35,53,70]
 
     for L in L_range:
-        #print(L)
+        print(L)
         light_intensity = light(1545, L, 2, 6.554)
         #print(light_intensity)
-        sol = odeint(diff_eqs, y0, t)
-
+        sol = odeint(diff_eqs, y0, t, Km)
         """plot output"""
         # We set the font we wanted for our graphs
         asfont = {'fontname': 'Arial'}
 
+        plt.style.use('ggplot')
+        plt.plot(t, sol[:, 3])
 
-        #plt.style.use('ggplot')
-        #plt.plot(t, sol[:, 0])
-        #plt.plot(t, sol[:, 1])
-        plt.plot(t, sol[:, 2])
-        #plt.style.use('ggplot')
-       # #plt.plot(t, sol[:, 3])
+        # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
+        plt.legend(['0 W/$m^2$', '18 W/$m^2$', '35 W/$m^2$', '53 W/$m^2$', '70 W/$m^2$'], loc='lower right')
+        plt.ylabel('Concentration (uM)',**asfont)
+        plt.xlabel('Time (hr)',**asfont)
+        #plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+        plt.legend(loc=1, borderaxespad=0)
+        plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 
-    #plt.legend(['EL222 dimer bound to promoter', 'mRNA', 'Translated Intimin', 'Surface-expressed Intimin', ],
-
-    plt.legend(['Transport of Intimin on the cell surface'],loc='lower right')
-    plt.ylabel('Concentration (uM)',**asfont)
-    plt.xlabel('Time (hr)',**asfont)
-    #plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
-    plt.legend(loc=1, borderaxespad=0)
-    plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-
-plt.show()
+    plt.show()
