@@ -23,7 +23,7 @@ def light(k, L, n, K1):
 
     return k1
 
-def diff_eqs(y, t, km):
+def diff_eqs(y, t):
     '''This function contains the differential equations'''
 
     """Unpacking y"""
@@ -47,7 +47,7 @@ def diff_eqs(y, t, km):
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
 
     # Rate at which the protein is transferred to the surface of the cell
-    v = 115200 / 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
+    #v = 115200 / 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
     # its cytoplasm (1/hr)
     n = 1 - (Intiminsurface / (6.48 * 10 ** -6))  # Representing the space available for more proteins on the surface
 
@@ -65,7 +65,8 @@ def diff_eqs(y, t, km):
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, 24, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
-    Km= np.linspace(1,10,10)
+    Km_array=[1,2,3,4,5,6,7,8,9,10]
+    v_array=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000]
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -80,13 +81,18 @@ if __name__ == "__main__":
     # Once we selected our range of light intensities we inputted them into our initial function to calculate the value
     # of k1 and then inputted the values of k1 into our differential equations
 
-    L_range = [0,18,35,53,70]
+    L_range = [70]
 
     for L in L_range:
         print(L)
         light_intensity = light(1545, L, 2, 6.554)
         #print(light_intensity)
-        sol = odeint(diff_eqs, y0, t, Km)
+    for i in Km_array:
+        Km =i
+
+    for i in v_array:
+        v =i
+        sol = odeint(diff_eqs,y0,t)
         """plot output"""
         # We set the font we wanted for our graphs
         asfont = {'fontname': 'Arial'}
