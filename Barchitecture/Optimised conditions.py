@@ -47,7 +47,8 @@ def diff_eqs(y, t):
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
 
     # Rate at which the protein is transferred to the surface of the cell
-    #v = 115200 / 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
+    Km=1
+    v = 24000  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
     # its cytoplasm (1/hr)
     n = 1 - (Intiminsurface / (6.48 * 10 ** -6))  # Representing the space available for more proteins on the surface
 
@@ -64,9 +65,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 24, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
-    Km_array=[1,2,3,4,5,6,7,8,9,10]
-    v_array=[10000,11000,12000,13000,14000,15000,16000,17000,18000,19000]
+    t = np.linspace(0, 5, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -87,11 +86,7 @@ if __name__ == "__main__":
         print(L)
         light_intensity = light(1545, L, 2, 6.554)
         #print(light_intensity)
-    for i in Km_array:
-        Km =i
-        #CORRECTED
-    for i in v_array:
-        v =i
+
         sol = odeint(diff_eqs,y0,t)
         """plot output"""
         # We set the font we wanted for our graphs
@@ -101,11 +96,10 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 3])
 
         # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-        plt.legend(['0 W/$m^2$', '18 W/$m^2$', '35 W/$m^2$', '53 W/$m^2$', '70 W/$m^2$'], loc='lower right')
+        #plt.legend(['V_max= 24,000 1/hr and Km= 1 uM'], loc='center left', bbox_to_anchor=(1, 0.5))
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
-        #plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+        plt.title('Optimised $V_{max}$(24,000 1/hr)and Km (1 uM) conditions ', fontsize=10, y=1.08)
         plt.legend(loc=1, borderaxespad=0)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-
     plt.show()

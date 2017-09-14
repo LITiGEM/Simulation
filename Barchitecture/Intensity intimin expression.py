@@ -95,7 +95,6 @@ if __name__ == "__main__":
         light_intensity = light(1545, L, 2, 6.554)
         #print(light_intensity)
         sol = odeint(diff_eqs, y0, t)
-
         """plot output"""
         # We set the font we wanted for our graphs
         asfont = {'fontname': 'Arial'}
