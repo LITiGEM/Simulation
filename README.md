@@ -7,6 +7,7 @@ This repository contains all the modelling code of the UCL 2017 IGEM team.
 The UCL iGEM 2017 team spent its summer developing a range of models that simulate and optimize parameters that affect cellular mechanisms in different areas of light induced technologies (LIT).
 Four models were developed by the team. The codes contained in this file have been created using the programming languages Python and MATLAB.
 This file contains the following models:
+
 LIT Barchitecture Model
 Optimization of rate kinetics for the expression of a surface protein (intimin).
 The construct is induced with blue light (450 nm), the effect of light induction is tested in 2 ways: light intensity used and light pulsing.
@@ -25,7 +26,7 @@ Visual representation of the cell adhesion; where the two binding partners SpyTa
 - run_GameOfLit.m
 - run_LOGO.m
 
-LIT Mammalian Cells Model
+LIT Tissue Regeneration Model
 Optimization of rate kinetics for the photoactivation of the dCAS9 – p65 construct. The system is induced by the photo cleaving of the linker PhoCl with violet light.
 - mammalian light intensity.py
 - mammalian rate kinetics.py
