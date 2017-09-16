@@ -45,5 +45,5 @@ This model optimizes the dimensions of the LIT bulb. Parameters were optimized t
 - OptimiseIph0.m
 - PAR_Norm.mat
 
-LIT UCL iGEM would like to thank Dr Christopher Barnes (UCL, Department of Cell & Developmental Biology), Dr Alexandros Kiparissides (UCL, Department of Biochemical Engineering), Behzad Karkaria (PhD student, UCL, Department of Cell & Developmental Biology), and Maximilien Rothier Bautzer (MRes, UCL, Department of Biochemical Engineering) for the support and assistance they gave to the modelling team throughout the summer.  
+LIT UCL iGEM would like to thank Dr Christopher Barnes (UCL, Department of Cell & Developmental Biology), Dr Darren Nesbeth (UCL, Department of Biochemical Engineering), Dr Alexandros Kiparissides (UCL, Department of Biochemical Engineering), Behzad Karkaria (PhD student, UCL, Department of Cell & Developmental Biology), and Maximilien Rothier Bautzer (MRes, UCL, Department of Biochemical Engineering) for the support and assistance they gave to the modelling team throughout the summer.
 
