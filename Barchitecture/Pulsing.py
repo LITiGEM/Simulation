@@ -12,14 +12,14 @@ k1_pulse=0
 def pulsing(t2):
     ON=12/24
 
-    if t2>43200:
+    if t2>12:
             k1_pulse=0
 
     elif t2<0:
             k1_pulse=0
 
     else:
-            k1_pulse=k1*(math.sin(((t2/86400-math.floor(t2/86400)))*math.pi/(1-ON)))
+            k1_pulse=k1*(math.sin(((t2/24-math.floor(t2/24)))*math.pi/(1-ON)))
 
     #k1_pulsing_array.append(k1_pulse)
 
@@ -41,8 +41,9 @@ def diff_eqs(y, t):
     d2 = 60/20 # Degradation of protein (Half-life of E.coli) (1/hr)
     d3= 60/20 #half-life of intimin (1/hr)
     light_pulsing = pulsing(t)
+    a = ((400 / 2000) * (5 ** -10)) * 100  # We modelled it at 0.2 of the maximal expression rate
     # Rate of EL222 being activated by light and binding to the promoter
-    dB_dt = (light_pulsing* (T) ** 2) - (k2 * B)
+    dB_dt = a+(light_pulsing* (T) ** 2) - (k2 * B)
 
     # Rate of transcription
     dmRNA_dt = (k2 * B) - (d1 * mRNA) - (k3 * mRNA)
@@ -67,7 +68,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     #time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 500500, 100000)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    t = np.linspace(0, 15, 1000)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     T = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -107,16 +108,16 @@ if __name__ == "__main__":
 
     plt.style.use('ggplot')
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-    plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
+    plt.ticklabel_format(style='sci', axis='x')
+    plt.plot(t, sol[:, 0])
     plt.plot(t, sol[:, 1])
     plt.plot(t, sol[:, 2])
     plt.plot(t, sol[:, 3])
-        #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
-        #plt.legend(['0 W/$m^2$', '2 W/$m^2$', '8 W/$m^2$', '14 W/$m^2$'], loc='lower right')
+    plt.title('Pulsing light for 12 hours', fontsize=10, y=1.08)
+    plt.legend(['Photoactivation', 'Transcription', 'Translation', 'Transport to the cell surface'], loc='center left', bbox_to_anchor=(1, 0.5))
         #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
-        #plt.ylabel('Concentration (uM)',**asfont)
-        #plt.xlabel('Time (hr)',**asfont)
-        #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
-        #plt.legend(loc=1, borderaxespad=0)
+    plt.ylabel('Concentration (uM)',**asfont)
+    plt.xlabel('Time (hr)',**asfont)
+
         #plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.show()

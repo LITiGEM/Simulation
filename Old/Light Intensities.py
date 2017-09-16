@@ -60,7 +60,7 @@ def diff_eqs(y, t):
     dIntiminintracellular_dt = (k3 * mRNA) - (d2 * Intiminintracellular) - (b * Intiminintracellular)
 
     # Rate of expression of the protein on the surface of the cell
-    dIntiminsurface_dt = (b * Intiminintracellular)
+    dIntiminsurface_dt = (b * Intiminintracellular)-(d2*Intiminsurface)
 
     """Repack solution in same order as y"""
 
@@ -68,7 +68,7 @@ def diff_eqs(y, t):
     return sol
 
 if __name__ == "__main__":
-    run_time= 200 #hours
+    run_time= 20 #hours
     time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, run_time, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are
     # equally spaced within the two limits

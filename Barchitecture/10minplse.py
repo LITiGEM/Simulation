@@ -7,22 +7,20 @@ k1_pulsing_array =[]
 
 light_pulsing=0
 k1=458.4
-k1_pulse=0
+k1_pulse =0
 
 def pulsing(t2):
-    ON=12/24
 
-    if t2<1728 and 3500>t2>5200 and 69000>t2>8600:
-            k1_pulse=0
+    ON=20/24
 
-    elif t2<0:
-            k1_pulse=0
+    if t2<0:
+        k1_pulse =0
 
     else:
-            k1_pulse=k1*(math.sin(((t2/8640-math.floor(t2/8640)))*math.pi/(1-ON)))
+        k1_pulse = k1 * (math.sin(((t2/24 - math.floor(t2/24))) * math.pi / (1 - ON)))
 
-            if k1_pulse<0:
-                k1_pulse=0
+    if k1_pulse<0:
+        k1_pulse =0
     #k1_pulsing_array.append(k1_pulse)
 
     return k1_pulse
@@ -37,11 +35,11 @@ def diff_eqs(y, t):
     S = y[3] # Expression on surface (microM/L)
 
     """Set rate constants"""  # we made these numbers up we are now looking into fixing them and adding rate equations for the k values
-    k2 = (108/25) # Rate of transcription per transcript (1/hr)
-    k3 = (3600/660) # Rate of translation (1/hr)
-    d1 = 60/300 # Degradation of transcript (1/hr)
-    d2 = 60/20 # Degradation of protein (Half-life of E.coli) (1/hr)
-    d3= 60/20 #half-life of intimin (1/hr)
+    k2 = (108/25) #103.7 #(108/25) # Rate of transcription per transcript (1/hr)
+    k3 = (3600/660) #130.9 #(3600/660) # Rate of translation (1/hr)
+    d1 = 60/300 #4.8 #60/300 # Degradation of transcript (1/hr)
+    d2 = 60/20 #72 #60/20 # Degradation of protein (Half-life of E.coli) (1/hr)
+    d3= (60/20) #72 #60/20 #half-life of intimin (1/hr)
     light_pulsing = pulsing(t)
     # Rate of EL222 being activated by light and binding to the promoter
     dB_dt = (light_pulsing* (T) ** 2) - (k2 * B)
@@ -51,7 +49,7 @@ def diff_eqs(y, t):
 
     # Rate at which the protein is transferred to the surface of the cell
     Km = 5  # (microM/L)
-    v = 115200/ 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to its cytoplasm (1/hr)
+    v = 11520  #276480 #11520  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to its cytoplasm (1/hr)
     n = 1 - (S / (6.48 * 10 ** -6))  # Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
     b = (P / (P + Km)) * n * v  # Rate at which the protein is transferred to the surface of the cell (1/s)
 
@@ -69,7 +67,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     #time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 90000, 1000000)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    t = np.linspace(0, 24, 100)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     T = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -88,13 +86,18 @@ if __name__ == "__main__":
         #light_intensities = light(1545, L, 2, 6.554)
         #sol = odeint(diff_eqs, y0, t)
 
-    t2_range = np.array([0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000])
+    t2_range = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
     for t2 in t2_range:
         # print(t)
         light_pulsing=pulsing(t2)
         #  print(light_pulsing)
         sol = odeint(diff_eqs, y0, t)
+        plt.style.use('ggplot')
+        #plt.plot(t, sol[:, 0])
+        #plt.plot(t, sol[:, 1])
+        #plt.plot(t, sol[:, 2])
+        plt.plot(t, sol[:, 3])
 
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
     #for light_pulsing in light_pulsing_range:
@@ -107,16 +110,13 @@ if __name__ == "__main__":
     asfont = {'fontname': 'Arial'}
     hfont = {'fontname': 'Helvetica'}
 
-    plt.plot(t, sol[:, 0])
-    plt.plot(t, sol[:, 1])
-    plt.plot(t, sol[:, 2])
-    plt.plot(t, sol[:, 3])
-        #plt.legend(['EL222 bound to promoter', 'mRNA', 'Translated protein', 'Surface-expressed protein',], bbox_to_anchor=(1, 0.5))
-        #plt.legend(['0 W/$m^2$', '2 W/$m^2$', '8 W/$m^2$', '14 W/$m^2$'], loc='lower right')
-        #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
-        #plt.ylabel('Concentration (uM)',**asfont)
-        #plt.xlabel('Time (hr)',**asfont)
-        #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
-        #plt.legend(loc=1, borderaxespad=0)
+
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-    plt.show()
+    plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 24))
+
+    plt.title('Pulsing light for 4 hour intervals', fontsize=10, y=1.08)
+    plt.legend(['Photoactivation', 'Transcription', 'Translation', 'Transport to the cell surface'], loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.ylabel('Concentration (uM)',**asfont)
+    plt.xlabel('Time (hr)',**asfont)
+
+plt.show()

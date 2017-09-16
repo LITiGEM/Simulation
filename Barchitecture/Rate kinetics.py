@@ -9,7 +9,6 @@ k1_rate_array = []
 # The array was created to add the values of k1 as different light intensities are examined
 
 def light(k, L, n, K1):
-    a = 444.6  # Basal expression level of the promoter (microM)
 
     # k: Maximum expression due to induction (a.u.)
     # K1:Hill constant (W/m^2)
@@ -17,7 +16,7 @@ def light(k, L, n, K1):
     # a: Basal expression level of the promoter (microM)
     # L: Light intensity (W)
 
-    k1 = a + ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
+    k1 = ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
 
     k1_rate_array.append(k1)
 
@@ -41,14 +40,15 @@ def diff_eqs(y, t):
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    dEL222dimer_dt = (light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
+    a=((400/2000)*(5*(10**-10)))/100
+    dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
     # Rate of transcription
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
 
     # Rate at which the protein is transferred to the surface of the cell
-    Km = 1 # (microM/L)
-    v = 36000/10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
+    Km = 5 # (microM/L)
+    v = 15000  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
     # its cytoplasm (1/hr)
     n = 1 - (Intiminsurface / (2.48 ** -4))  # Representing the space available for more proteins on the surface
     # of the cell in the form of a ratio (Dimensionless)
@@ -58,11 +58,8 @@ def diff_eqs(y, t):
     # Rate of translation
     dIntiminintracellular_dt = (k3 * mRNA) - (d2 * Intiminintracellular) - (b * Intiminintracellular)
 
-    print(Intiminintracellular)
-
-
     # Rate of expression of the protein on the surface of the cell
-    dIntiminsurface_dt = (b * Intiminintracellular)-d2*(Intiminsurface)
+    dIntiminsurface_dt = (b * Intiminintracellular)-(d2*(Intiminsurface))
 
     """Repack solution in same order as y"""
 
@@ -71,8 +68,8 @@ def diff_eqs(y, t):
     return sol
 
 if __name__ == "__main__":
-    time_steps = 2  # Number of timepoints to simulate
-    t = np.linspace(0, 10, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    time_steps = 1000  # Number of timepoints to simulate
+    t = np.linspace(0, 5,time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -95,22 +92,18 @@ if __name__ == "__main__":
 
         """plot output"""
         # We set the font we wanted for our graphs
-        asfont = {'fontname': 'Arial'}
-
-
-        #plt.style.use('ggplot')
-        #plt.plot(t, sol[:, 0])
-        #plt.plot(t, sol[:, 1])
+        asfont = {'fontname':'Arial'}
+        plt.style.use('ggplot')
+        plt.plot(t, sol[:, 0])
+        plt.plot(t, sol[:, 1])
         plt.plot(t, sol[:, 2])
-        #plt.style.use('ggplot')
-       # #plt.plot(t, sol[:, 3])
+        plt.plot(t, sol[:, 3])
 
-    #plt.legend(['EL222 dimer bound to promoter', 'mRNA', 'Translated Intimin', 'Surface-expressed Intimin', ],
-
-    plt.legend(['Transport of Intimin on the cell surface'],loc='lower right')
+    plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
+    #plt.legend(['Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
-    #plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+    #plt.title('Current transport of intimin to the cell surface', fontsize=10, y=1.08)
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 

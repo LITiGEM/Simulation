@@ -9,7 +9,6 @@ k1_rate_array = []
 # The array was created to add the values of k1 as different light intensities are examined
 
 def light(k, L, n, K1):
-    a = 444.6  # Basal expression level of the promoter (microM)
 
     # k: Maximum expression due to induction (a.u.)
     # K1:Hill constant (W/m^2)
@@ -17,12 +16,14 @@ def light(k, L, n, K1):
     # a: Basal expression level of the promoter (a. u)
     # L: Light intensity (W)
 
-    k1 = a + ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
+    k1 = ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
 
     k1_rate_array.append(k1)
 
 
     return k1
+
+    print(k1)
 
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
@@ -33,7 +34,6 @@ def diff_eqs(y, t):
     Intiminintracellular = y[2]  # Translation (microM/L)
     Intiminsurface = y[3]  # Expression of Intimin on the surface of the cells (microM/L)
 
-
     """Set rate constants""" # Most values were collected from papers, we are finessing them by adding
     # values our Wet Lab obtained from our experiments
 
@@ -43,7 +43,9 @@ def diff_eqs(y, t):
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    dEL222dimer_dt = (light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
+    a=((400/2000)*(5**-10))*100  #We modelled it at 0.2 of the maximal expression rate
+
+    dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
     # Rate of transcription
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
@@ -60,11 +62,10 @@ def diff_eqs(y, t):
     # Rate of translation
     dIntiminintracellular_dt = (k3 * mRNA) - (d2 * Intiminintracellular) - (b * Intiminintracellular)
 
-    print(b)
-
-
     # Rate of expression of the protein on the surface of the cell
     dIntiminsurface_dt = (b * Intiminintracellular) -d2*(Intiminsurface)
+
+    print(Intiminintracellular)
 
     """Repack solution in same order as y"""
 
@@ -74,7 +75,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 24, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    t = np.linspace(0, 25, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -95,18 +96,17 @@ if __name__ == "__main__":
         light_intensity = light(1545, L, 2, 6.554)
         #print(light_intensity)
         sol = odeint(diff_eqs, y0, t)
+        plt.style.use('ggplot')
+        plt.plot(t, sol[:, 3])
         """plot output"""
         # We set the font we wanted for our graphs
         asfont = {'fontname': 'Arial'}
 
-        plt.style.use('ggplot')
-        plt.plot(t, sol[:, 3])
-
         # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-        plt.legend(['0 W/$m^2$', '18 W/$m^2$', '35 W/$m^2$', '53 W/$m^2$', '70 W/$m^2$'], loc='lower right')
+        plt.legend(['0 W/$m^2$', '18 W/$m^2$', '35 W/$m^2$', '53 W/$m^2$', '70 W/$m^2$'], loc='center left', bbox_to_anchor=(1, 0.5))
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
-        #plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+        plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
         plt.legend(loc=1, borderaxespad=0)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 

@@ -95,8 +95,7 @@ if __name__ == "__main__":
     y0 = [EL222dimer_0, mRNA_0, Intiminintracellular_0, Intiminsurface_0]
 
     # We then called the function we created to randomly select light intensities with normal distribution
-    #L_range = SampleParam(150, 50, 10)
-    L_range=np.linspace(0,300,10)
+    L_range = SampleParam(150, 50, 10)
 
     print(L_range)
 

@@ -9,7 +9,6 @@ k1_rate_array = []
 # The array was created to add the values of k1 as different light intensities are examined
 
 def light(k, L, n, K1):
-    a = 444.6  # Basal expression level of the promoter (microM)
 
     # k: Maximum expression due to induction (a.u.)
     # K1:Hill constant (W/m^2)
@@ -17,7 +16,7 @@ def light(k, L, n, K1):
     # a: Basal expression level of the promoter (a. u)
     # L: Light intensity (W)
 
-    k1 = a + ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
+    k1 = ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
 
     k1_rate_array.append(k1)
 
@@ -40,8 +39,10 @@ def diff_eqs(y, t):
     d1 = 60 / 20  # Degradation of transcript (1/hr)
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
+    a = ((400 / 2000) * (5 ** -10)) * 100  # We modelled it at 0.2 of the maximal expression rate
+
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    dEL222dimer_dt = (light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
+    dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
     # Rate of transcription
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
