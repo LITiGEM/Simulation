@@ -9,6 +9,7 @@ Four models were developed by the team. The codes contained in this file have be
 This file contains the following models:
 
 LIT Barchitecture Model
+
 Optimization of rate kinetics for the expression of a surface protein (intimin).
 The construct is induced with blue light (450 nm), the effect of light induction is tested in 2 ways: light intensity used and light pulsing.
 - 10minplse.py
@@ -18,7 +19,8 @@ The construct is induced with blue light (450 nm), the effect of light induction
 - Rate kinetics.py
 - Sensitivity Analysis.py
 
-Game of LIT Model
+Game of LIT
+
 Variation of Conway’s Game of Life
 Visual representation of the cell adhesion; where the two binding partners SpyTag and SpyCatcher bind to each other.
 - GameOfLit.m
@@ -27,11 +29,13 @@ Visual representation of the cell adhesion; where the two binding partners SpyTa
 - run_LOGO.m
 
 LIT Tissue Regeneration Model
+
 Optimization of rate kinetics for the photoactivation of the dCAS9 – p65 construct. The system is induced by the photo cleaving of the linker PhoCl with violet light.
 - mammalian light intensity.py
 - mammalian rate kinetics.py
 
-LIT bulb Model  
+LIT bulb Model
+
 This model optimizes the dimensions of the LIT bulb. Parameters were optimized to allow for the highest rate of sugar production within the light bulb, as this would maximise the amount of luminescence emitted from the bulb. The following parameters are optimized: diameter of the LIT bulb, incoming Photon Flux Density and biomass concentration of cyanobacteria. 
 - bulbST.m
 - Cyano.mat
