@@ -13,11 +13,12 @@ LIT Barchitecture Model
 Optimization of rate kinetics for the expression of a surface protein (intimin).
 The construct is induced with blue light (450 nm), the effect of light induction is tested in 2 ways: light intensity used and light pulsing.
 - 10minplse.py
-- india.py
 - Intensity intimin expression.py
 - Pulsing.py
 - Rate kinetics.py
-- Sensitivity Analysis.py
+- Km sensitivity.py
+- Vmax sensitivity.py
+- Optimised conditions.py
 
 Game of LIT
 
