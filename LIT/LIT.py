@@ -1,6 +1,8 @@
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+import matplotlib.colors as mlpCol
+import time
 
 #--------------------------------------------------------
 # Object
@@ -33,7 +35,6 @@ def GenProb(numParam):
     probArray = np.random.rand(1,numParam)
 
     return probArray
-
 
 def GenSetAgent(numAgent, A, B, C, D, E):
 
@@ -137,16 +138,27 @@ def PlaceCells(grid, agent, cellNum):
 
 def DrawGrid(grid):
 
+    dimensions = grid.shape
+
+    maxRow = dimensions[0]
+    maxCol = dimensions[1]
+
+
+    # I do 1. because it has to be float, we need to normalise the color map
+    norm = mlpCol.Normalize(vmin=0.,vmax=1.)
+
     # tell imshow about color map so that only set colors are used
-    img = plt.imshow(updateGrid,interpolation='nearest',cmap=None,norm=None)
-    bounds = [-6, -2, 2, 6]
+    img = plt.imshow(grid,interpolation='nearest',cmap=None,norm=norm)
+
     # make a color bar
-    plt.colorbar(img,cmap=None,norm=None)
+    plt.colorbar(img, cmap=None, norm=norm)
+
+    plt.xticks([])
+    plt.yticks([])
 
     plt.show()
 
-
-def RunGame(grid, genNum, timePause, ruleSet):
+def RunGame(grid, genNum, ruleSet):
 
     # Getting the agents to place the cells in the grid
     counter = 0
@@ -217,6 +229,41 @@ def RunGame(grid, genNum, timePause, ruleSet):
 
     return newGrid
 
+def FindCoverTime(agent, grid, ruleSet):
+
+    dimensions = grid.shape
+
+    maxRow = dimensions[0]
+    maxCol = dimensions[1]
+
+    totalCell = maxRow*maxCol
+
+    genNum = 0
+    currentGrid = grid
+
+    while currentGrid.sum() < totalCell:
+
+        currentGrid = RunGame(currentGrid, 1, ruleSet)
+
+        genNum = genNum + 1
+
+    return genNum
+
+def FindBestAgent(agentArray, grid, ruleSet):
+
+    #initiating the variables to return, those values do not matter
+    bestAgent = agentArray[0]
+    bestGenNum = 0
+
+    # find the number of generation needed to cover the grid for each agents
+    for agent in agentArray:
+        genNum = FindCoverTime(agent, grid, ruleSet)
+
+        if bestGenNum < genNum:
+            bestGenNum = genNum
+            bestAgent = agent
+
+    return bestAgent, bestGenNum
 
 #--------------------------------------------------------
 # Running simulation
@@ -230,13 +277,19 @@ grid = NewGrid(20,20)
 
 updateGrid = PlaceCells(grid, agentArray[0], 12)
 
-DrawGrid(updateGrid)
-
 ruleSet = RuleSet(0.2, 0.3, 0.4, 0.5, 0.6)
 
-finalGrid = RunGame(updateGrid,2000,0.1,ruleSet)
+finalGrid = RunGame(updateGrid,2000,ruleSet)
 
-DrawGrid(finalGrid)
+#reinitialise empty grid
+grid = NewGrid(50,50)
 
+gen = FindCoverTime(agentArray[0],grid, ruleSet)
 
+grid = NewGrid(50,50)
 
+bestAgent, bestGen = FindBestAgent(agentArray,grid,ruleSet)
+
+print(bestGen)
+
+print(bestAgent.none, bestAgent.one, bestAgent.two, bestAgent.three, bestAgent.four)
