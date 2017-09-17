@@ -40,7 +40,8 @@ def diff_eqs(y, t):
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    a=((400/2000)*(5*(10**-10)))/100
+    a=((400/2000)*(5*(10**-10)))/100 #Basal promoter expression
+
     dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
     # Rate of transcription
@@ -94,13 +95,13 @@ if __name__ == "__main__":
         # We set the font we wanted for our graphs
         asfont = {'fontname':'Arial'}
         plt.style.use('ggplot')
-        plt.plot(t, sol[:, 0])
-        plt.plot(t, sol[:, 1])
-        plt.plot(t, sol[:, 2])
+        #plt.plot(t, sol[:, 0])
+        #plt.plot(t, sol[:, 1])
+        #plt.plot(t, sol[:, 2])
         plt.plot(t, sol[:, 3])
 
-    plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
-    #plt.legend(['Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
+    #plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
+    plt.legend(['Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
     #plt.title('Current transport of intimin to the cell surface', fontsize=10, y=1.08)

@@ -1,4 +1,6 @@
 import numpy as np
+import random
+import matplotlib.pyplot as plt
 
 #--------------------------------------------------------
 # Object
@@ -13,6 +15,15 @@ class Agent:
         self.three= D
         self.four= E
 
+#A RulSet refers to the probabilities of a cell changing state depending on the number of its neighbours
+class RuleSet:
+    def __init__(self, neighbNone, neighbOne, neighbTwo, neighbThree, neighbFour):
+        self.neighbNone = neighbNone
+        self.neighbOne = neighbOne
+        self.neighbTwo = neighbTwo
+        self.neighbThree = neighbThree
+        self.neighbFour = neighbFour
+
 #--------------------------------------------------------
 # Defining functions
 #--------------------------------------------------------
@@ -23,7 +34,18 @@ def GenProb(numParam):
 
     return probArray
 
-def GenAgent(numAgent):
+
+def GenSetAgent(numAgent, A, B, C, D, E):
+
+    agentArray = []
+
+    for num in range(numAgent):
+
+        agentArray.append(Agent(A, B, C, D, E))
+
+    return agentArray
+
+def GenRandAgent(numAgent):
 
     agentArray = []
 
@@ -33,33 +55,188 @@ def GenAgent(numAgent):
 
         agentArray.append(Agent(instance[0][0] , instance[0][1] , instance[0][2], instance[0][3], instance[0][4]))
 
-    print(agentArray[99].one) #we use [] to call a particular array (as now we are generating 100 agents
-
     return agentArray
 
 def NewGrid(length,height):
+    #generate a new grid with a specifed length and height
 
-    M=np.zeros(length,height)
+    grid = np.zeros((length,height))
 
-    return display(M)
+    return grid
+
+def PlaceCells(grid, agent, cellNum):
+
+    #Getting dimensions of the grid
+    dimensions = grid.shape
+
+    rowMax = dimensions[0]
+    colMax = dimensions[1]
+
+    #Getting the agents to place the cells in the grid
+    counter = 0
+    
+    while counter < cellNum:
+        sample = [divmod(i, rowMax) for i in random.sample(range(colMax * rowMax), 1)]
+
+        sampleRow = sample[0][0]
+        sampleCol = sample[0][1]
+
+        #setting parameters
+        try:
+            top=grid[sampleRow+1][sampleCol]
+        except:
+            #if the value is out of bound set top to zero (if you can't run it give it a zero value)
+            top = np.float64(0)
+
+        try:
+            down = grid[sampleRow -1][sampleCol]
+        except:
+            # if the value is out of bound set top to zero
+            down = np.float64(0)
+
+        try:
+            forward = grid[sampleRow ][sampleCol+1]
+
+        except:
+            # if the value is out of bound set top to zero
+            forward = np.float64(0)
+
+        try:
+            backward = grid[sampleRow][sampleCol-1]
+        except:
+            # if the value is out of bound set top to zero
+            backward = np.float64(0)
+
+        envState = down + top + backward + forward
+
+        changeChance = np.float64(0)
+
+        if envState == 0:
+            changeChance = agent.none
+        elif envState == 1:
+            changeChance= agent.one
+        elif envState == 2:
+            changeChance = agent.two
+        elif envState == 3:
+            changeChance = agent.three
+        elif envState == 4:
+            changeChance= agent.four
 
 
+        if np.random.rand() <= changeChance:
+            grid[sampleRow][sampleCol] = np.float64(1)
+
+            counter = counter + 1
+
+        #print(counter)
+        #print("cell added")
+
+    newGrid = grid
+
+    return newGrid
+
+def DrawGrid(grid):
+
+    # tell imshow about color map so that only set colors are used
+    img = plt.imshow(updateGrid,interpolation='nearest',cmap=None,norm=None)
+    bounds = [-6, -2, 2, 6]
+    # make a color bar
+    plt.colorbar(img,cmap=None,norm=None)
+
+    plt.show()
 
 
+def RunGame(grid, genNum, timePause, ruleSet):
+
+    # Getting the agents to place the cells in the grid
+    counter = 0
+
+    dimensions = grid.shape
+
+    rowMax = dimensions[0]
+    colMax = dimensions[1]
 
 
+    while counter < genNum:
 
+        sample = [divmod(i, rowMax) for i in random.sample(range(colMax * rowMax), 1)]
 
+        sampleRow = sample[0][0]
+        sampleCol = sample[0][1]
 
+        # setting parameters
+        try:
+            top = grid[sampleRow + 1][sampleCol]
+        except:
+            # if the value is out of bound set top to zero (if you can't run it give it a zero value)
+            top = np.float64(0)
 
+        try:
+            down = grid[sampleRow - 1][sampleCol]
+        except:
+            # if the value is out of bound set top to zero
+            down = np.float64(0)
+
+        try:
+            forward = grid[sampleRow][sampleCol + 1]
+
+        except:
+            # if the value is out of bound set top to zero
+            forward = np.float64(0)
+
+        try:
+            backward = grid[sampleRow][sampleCol - 1]
+        except:
+            # if the value is out of bound set top to zero
+            backward = np.float64(0)
+
+        envState = down + top + backward + forward
+
+        changeChance = np.float64(0)
+
+        if envState == 0:
+            changeChance = ruleSet.neighbNone
+        elif envState == 1:
+            changeChance = ruleSet.neighbOne
+        elif envState == 2:
+            changeChance = ruleSet.neighbTwo
+        elif envState == 3:
+            changeChance = ruleSet.neighbThree
+        elif envState == 4:
+            changeChance = ruleSet.neighbFour
+
+        if np.random.rand() <= changeChance:
+            grid[sampleRow][sampleCol] = np.float64(1)
+
+            counter = counter + 1
+
+            # print(counter)
+            # print("cell added")
+
+    newGrid = grid
+
+    return newGrid
 
 
 #--------------------------------------------------------
 # Running simulation
 #--------------------------------------------------------
 
+agentArray = GenRandAgent(10)
+
+GenSetAgent(100, 0.7, 0.5, 0.6, 0.3, 0.2)
+
+grid = NewGrid(20,20)
+
+updateGrid = PlaceCells(grid, agentArray[0], 12)
+
+DrawGrid(updateGrid)
+
+ruleSet = RuleSet(0.2, 0.3, 0.4, 0.5, 0.6)
+
+finalGrid = RunGame(updateGrid,2000,0.1,ruleSet)
+
+DrawGrid(finalGrid)
 
 
-
-agentArray = GenAgent(100)
 

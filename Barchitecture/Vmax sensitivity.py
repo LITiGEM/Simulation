@@ -67,7 +67,7 @@ if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, 5, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
     #Km_array=[1,2,3,4,5,6,7,8,9,10]
-    v_array=[10000,12000,14000,16000,18000,20000,22000,24000]
+    v_array=[12000,14000,16000,18000,20000,22000,24000]
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)

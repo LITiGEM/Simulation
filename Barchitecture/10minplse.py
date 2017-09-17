@@ -114,8 +114,8 @@ if __name__ == "__main__":
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 24))
 
-    plt.title('Pulsing light for 4 hour intervals', fontsize=10, y=1.08)
-    plt.legend(['Photoactivation', 'Transcription', 'Translation', 'Transport to the cell surface'], loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.title('Effect pulsing light in 4 hour intervals has on intimin surface expression', fontsize=10, y=1.08)
+    #plt.legend(['Transport to the cell surface'], loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
 
