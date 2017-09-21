@@ -77,7 +77,7 @@ def PlaceCells(grid, agent, cellNum):
     counter = 0
     
     while counter < cellNum:
-        sample = [divmod(i, rowMax) for i in random.sample(range(colMax * rowMax), 1)]
+        sample = [divmod(i, rowMax) for i in random.sample(range(colMax * rowMax), 1)] #Pick a random point on the grid
 
         sampleRow = sample[0][0]
         sampleCol = sample[0][1]
@@ -133,7 +133,6 @@ def PlaceCells(grid, agent, cellNum):
         #print("cell added")
 
     newGrid = grid
-
     return newGrid
 
 def DrawGrid(grid):
@@ -168,62 +167,62 @@ def RunGame(grid, genNum, ruleSet):
     rowMax = dimensions[0]
     colMax = dimensions[1]
 
-
     while counter < genNum:
 
-        sample = [divmod(i, rowMax) for i in random.sample(range(colMax * rowMax), 1)]
+        for i in range(0,rowMax):
+            for j in range(0,colMax):
+                sampleRow = i
+                sampleCol = j
 
-        sampleRow = sample[0][0]
-        sampleCol = sample[0][1]
+                # setting parameters
+                try:
+                    top = grid[sampleRow + 1][sampleCol]
+                except:
+                    # if the value is out of bound set top to zero (if you can't run it give it a zero value)
+                    top = np.float64(0)
 
-        # setting parameters
-        try:
-            top = grid[sampleRow + 1][sampleCol]
-        except:
-            # if the value is out of bound set top to zero (if you can't run it give it a zero value)
-            top = np.float64(0)
+                try:
+                    down = grid[sampleRow - 1][sampleCol]
+                except:
+                    # if the value is out of bound set top to zero
+                    down = np.float64(0)
 
-        try:
-            down = grid[sampleRow - 1][sampleCol]
-        except:
-            # if the value is out of bound set top to zero
-            down = np.float64(0)
+                try:
+                    forward = grid[sampleRow][sampleCol + 1]
 
-        try:
-            forward = grid[sampleRow][sampleCol + 1]
+                except:
+                    # if the value is out of bound set top to zero
+                    forward = np.float64(0)
 
-        except:
-            # if the value is out of bound set top to zero
-            forward = np.float64(0)
+                try:
+                    backward = grid[sampleRow][sampleCol - 1]
+                except:
+                    # if the value is out of bound set top to zero
+                    backward = np.float64(0)
 
-        try:
-            backward = grid[sampleRow][sampleCol - 1]
-        except:
-            # if the value is out of bound set top to zero
-            backward = np.float64(0)
+                envState = down + top + backward + forward
 
-        envState = down + top + backward + forward
+                changeChance = np.float64(0)
 
-        changeChance = np.float64(0)
+                if envState == 0:
+                    changeChance = ruleSet.neighbNone
+                elif envState == 1:
+                    changeChance = ruleSet.neighbOne
+                elif envState == 2:
+                    changeChance = ruleSet.neighbTwo
+                elif envState == 3:
+                    changeChance = ruleSet.neighbThree
+                elif envState == 4:
+                    changeChance = ruleSet.neighbFour
 
-        if envState == 0:
-            changeChance = ruleSet.neighbNone
-        elif envState == 1:
-            changeChance = ruleSet.neighbOne
-        elif envState == 2:
-            changeChance = ruleSet.neighbTwo
-        elif envState == 3:
-            changeChance = ruleSet.neighbThree
-        elif envState == 4:
-            changeChance = ruleSet.neighbFour
+                if np.random.rand() <= changeChance:
+                    grid[sampleRow][sampleCol] = np.float64(1)
 
-        if np.random.rand() <= changeChance:
-            grid[sampleRow][sampleCol] = np.float64(1)
+                    counter = counter + 1
 
-            counter = counter + 1
+                    # print(counter)
+                    # print("cell added")
 
-            # print(counter)
-            # print("cell added")
 
     newGrid = grid
 
@@ -232,7 +231,6 @@ def RunGame(grid, genNum, ruleSet):
 def FindCoverTime(agent, grid, ruleSet):
 
     dimensions = grid.shape
-
     maxRow = dimensions[0]
     maxCol = dimensions[1]
 
@@ -242,8 +240,7 @@ def FindCoverTime(agent, grid, ruleSet):
     currentGrid = grid
 
     while currentGrid.sum() < totalCell:
-
-        currentGrid = RunGame(currentGrid, 1, ruleSet)
+        currentGrid = RunGame(currentGrid, genNum, ruleSet)
 
         genNum = genNum + 1
 
@@ -252,12 +249,16 @@ def FindCoverTime(agent, grid, ruleSet):
 def FindBestAgent(agentArray, grid, ruleSet):
 
     #initiating the variables to return, those values do not matter
+    emptyGrid = grid
     bestAgent = agentArray[0]
     bestGenNum = 0
 
     # find the number of generation needed to cover the grid for each agents
     for agent in agentArray:
-        genNum = FindCoverTime(agent, grid, ruleSet)
+        zeroGrid = NewGrid(50, 50)
+        initialGrid = PlaceCells(zeroGrid, agent, 12) #Needs to change to be agent specific
+
+        genNum = FindCoverTime(agent, initialGrid, ruleSet)
 
         if bestGenNum < genNum:
             bestGenNum = genNum
@@ -269,27 +270,29 @@ def FindBestAgent(agentArray, grid, ruleSet):
 # Running simulation
 #--------------------------------------------------------
 
-agentArray = GenRandAgent(10)
+if __name__ == "__main__":
+    agentArray = GenRandAgent(10)
 
-GenSetAgent(100, 0.7, 0.5, 0.6, 0.3, 0.2)
+    GenSetAgent(100, 0.7, 0.5, 0.6, 0.3, 0.2)
 
-grid = NewGrid(20,20)
+    grid = NewGrid(20,20)
 
-updateGrid = PlaceCells(grid, agentArray[0], 12)
+    updateGrid = PlaceCells(grid, agentArray[0], 12)
 
-ruleSet = RuleSet(0.2, 0.3, 0.4, 0.5, 0.6)
+    ruleSet = RuleSet(0.2, 0.3, 0.4, 0.5, 0.6)
 
-finalGrid = RunGame(updateGrid,2000,ruleSet)
+    finalGrid = RunGame(updateGrid,2000,ruleSet)
 
-#reinitialise empty grid
-grid = NewGrid(50,50)
 
-gen = FindCoverTime(agentArray[0],grid, ruleSet)
+    #reinitialise empty grid
+    zeroGrid = NewGrid(50,50)
+    #DrawGrid(zeroGrid)
+    print("finding cover time")
+    gen = FindCoverTime(agentArray[0],zeroGrid, ruleSet)
+    zeroGrid = NewGrid(50,50)
+    print("Finding best agent")
+    bestAgent, bestGen = FindBestAgent(agentArray,zeroGrid,ruleSet)
 
-grid = NewGrid(50,50)
+    print(bestGen)
 
-bestAgent, bestGen = FindBestAgent(agentArray,grid,ruleSet)
-
-print(bestGen)
-
-print(bestAgent.none, bestAgent.one, bestAgent.two, bestAgent.three, bestAgent.four)
+    print(bestAgent.none, bestAgent.one, bestAgent.two, bestAgent.three, bestAgent.four)
