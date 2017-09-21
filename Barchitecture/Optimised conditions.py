@@ -97,9 +97,10 @@ if __name__ == "__main__":
 
         # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
         #plt.legend(['V_max= 24,000 1/hr and Km= 1 uM'], loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.legend(['Surface expressed Intimin'], loc='centre right', bbox_to_anchor=(1, 0.5))
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
-        plt.title('Optimised $V_{max}$(24,000 1/hr)and Km (1 uM) conditions ', fontsize=10, y=1.08)
+        plt.title('Optimised Light Intensity (70 W/$m^2$) $V_{max}$(24,000 1/hr)and Km (1 uM) conditions ', fontsize=10, y=1.08)
         plt.legend(loc=1, borderaxespad=0)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.show()

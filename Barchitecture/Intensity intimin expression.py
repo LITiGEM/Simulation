@@ -43,7 +43,7 @@ def diff_eqs(y, t):
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    a=((400/2000)*(5**-10))*100  #We modelled it at 0.2 of the maximal expression rate
+    a=((400/2000)*(5**-10))*100  #basal promoter expression
 
     dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 

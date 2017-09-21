@@ -2,11 +2,9 @@ import matplotlib.pyplot as plt
 
 k1_rate_array = []
 
-
 def light(k,L,n,K1):
 
     a=444.6
-
     # k:  Maximum expression due to induction
     # K1: Hill constant
     # n: Hill coefficient
@@ -19,7 +17,9 @@ def light(k,L,n,K1):
 
     return k1
 
-for L in range (0,15):
+L_range= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+
+for L in L_range:
     light_intensity = light( 1545, L, 2, 6.554)
 
 print(k1_rate_array)
