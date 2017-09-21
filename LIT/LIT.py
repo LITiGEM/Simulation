@@ -238,13 +238,14 @@ def FindCoverTime(agent, grid, ruleSet):
 
     genNum = 0
     currentGrid = grid
-
+    DrawGrid(grid)
     while currentGrid.sum() < totalCell:
         currentGrid = RunGame(currentGrid, genNum, ruleSet)
-
         genNum = genNum + 1
 
+
     return genNum
+
 
 def FindBestAgent(agentArray, grid, ruleSet):
 

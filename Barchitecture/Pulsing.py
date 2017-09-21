@@ -10,7 +10,7 @@ k1=458.4
 k1_pulse=0
 
 def pulsing(t2):
-    ON=12/24
+    ON=43200/86400
 
     if t2>12:
             k1_pulse=0
