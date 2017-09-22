@@ -102,9 +102,9 @@ if __name__ == "__main__":
 
         light_intensity = light(1545, L, 2, 6.554)
 
-    Km_array= SampleParam(0.00147, 0.002, 10)
+    Km_array= (SampleParam(1470, 200, 10))/1000000
 
-    #print(Km_array)
+    print(Km_array)
 
     Km_arrayLabels = []
 
@@ -112,12 +112,12 @@ if __name__ == "__main__":
         Km=i
         sol = odeint(diff_eqs, y0, t)
 
-    plt.style.use("ggplot")
+        plt.style.use("ggplot")
 
     # Once we selected our range of light intensities we inputted them into our initial function to calculate the value
     # of k1 and then inputted the values of k1 into our differential equations
 
-    plt.plot(t, sol[:,3])
+        plt.plot(t, sol[:,3])
 
     Km_arrayLabels.append(str(Km) + 'uM')
 
