@@ -26,9 +26,9 @@ def diff_eqs(y, t):
     '''This function contains the differential equations'''
 
     """Unpacking y"""
-    EL222dimer = y[0]  # EL222 dimerisation and binding to the promoter (microM/L)
-    mRNA = y[1]  # Transcrption (microM/L)
-    Intiminintracellular = y[2]  # Translation (microM/L)
+    EL222dimer = y[0] # EL222 dimerisation and binding to the promoter (microM/L)
+    mRNA = y[1] # Transcrption (microM/L)
+    Intiminintracellular = y[2] # Translation (microM/L)
     Intiminsurface = y[3]  # Expression of Intimin on the surface of the cells (microM/L)
 
     """Set rate constants""" # Most values were collected from papers, we are finessing them by adding
@@ -65,8 +65,8 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 4, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
-    Km_array=[1,2,3,4,5,6,7,8,9,10]
+    t = np.linspace(0, 5, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    Km_array=[ 0.000005, 0.0003, 0.0009, 0.0079, 0.015, 0.026]
     #v_array=[10000,12000,14000,16000,18000,20000,22000,24000]
 
     '''Set initial species concentration values'''
@@ -99,10 +99,11 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 3])
 
         # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-        plt.legend(['1 uM', '2 uM', '3 uM', '4 uM', '5 uM', '6 uM', '7 uM', '8 uM', '9 uM', '10 uM'], loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.legend(['0.000005 uM', '0.0003 uM', '0.0009 uM', '0.0079 uM', '0.015 uM', '0.026 uM'], loc='center left', bbox_to_anchor=(1, 0.5))
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
-        plt.title('Effect changing Km has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+        #plt.title('Effect changing Km has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
         plt.legend(loc=1, borderaxespad=0)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+        plt.xlim((0,5))
     plt.show()

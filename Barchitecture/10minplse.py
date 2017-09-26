@@ -11,7 +11,7 @@ k1_pulse =0
 
 def pulsing(t2):
 
-    ON=20/24
+    ON=22/24
 
     if t2<0:
         k1_pulse =0
@@ -67,7 +67,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     #time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 24, 100)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    t = np.linspace(0, 25, 100)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     T = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -110,13 +110,12 @@ if __name__ == "__main__":
     asfont = {'fontname': 'Arial'}
     hfont = {'fontname': 'Helvetica'}
 
-
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 24))
 
-    plt.title('Effect pulsing light in 4 hour intervals has on intimin surface expression', fontsize=10, y=1.08)
+    #plt.title('Effect pulsing light in 4 hour intervals has on intimin surface expression', fontsize=10, y=1.08)
     #plt.legend(['Transport to the cell surface'], loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
-
+    plt.xlim((0,25))
 plt.show()

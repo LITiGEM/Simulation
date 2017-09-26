@@ -113,11 +113,12 @@ if __name__ == "__main__":
     plt.plot(t, sol[:, 1])
     plt.plot(t, sol[:, 2])
     plt.plot(t, sol[:, 3])
-    plt.title('Visualising the effect 1 pulse has on rate kinetics', fontsize=10, y=1.08)
+    #plt.title('Visualising the effect 1 pulse has on rate kinetics', fontsize=10, y=1.08)
     plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
         #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
+    plt.xlim((0, 15))
 
         #plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.show()

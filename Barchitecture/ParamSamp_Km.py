@@ -1,7 +1,6 @@
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
-import math
 
 
 # k1: Rate at which EL222 becomes activated with light to bind to the promoter
@@ -80,7 +79,7 @@ def SampleParam (paramValue,sigma, paramNum):
 if __name__ == "__main__":
 
     #We defined the time for which we would like our cellular mechanisms to run for
-    runTime = 200 #hours
+    runTime = 5 #hours
     time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, runTime, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally
 
@@ -109,7 +108,7 @@ if __name__ == "__main__":
     Km_arrayLabels = []
 
     for i in Km_array:
-        Km=i
+        Km=round(i,4)
         sol = odeint(diff_eqs, y0, t)
 
         plt.style.use("ggplot")
@@ -119,7 +118,7 @@ if __name__ == "__main__":
 
         plt.plot(t, sol[:,3])
 
-    Km_arrayLabels.append(str(Km) + 'uM')
+        Km_arrayLabels.append(str(Km) + '1/hr')
 
     """plot output"""
     #We set the fonts we wanted for our graphs
@@ -131,7 +130,7 @@ if __name__ == "__main__":
     plt.ylim(0)
     plt.xlabel('Time (hr)', **asfont)
     plt.xlim(0, runTime)
-    plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface ',fontsize=10, y=1.08)
+    #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface ',fontsize=10, y=1.08)
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.legend(Km_arrayLabels, loc='lower right')

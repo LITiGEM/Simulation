@@ -79,9 +79,8 @@ def diff_eqs(y, t):
 
 
 if __name__ == "__main__":
-    time_steps = 100  # Number of timepoints to simulate
-    t = np.linspace(0, 5,
-                    time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    time_steps = 1000  # Number of timepoints to simulate
+    t = np.linspace(0, 10,time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     LACE = 1.54 * (10 ** -7)  # Initial concentra0tion of the transmembrane protein complex (units)
@@ -93,36 +92,25 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [TF_0, mRNA_0, P_0]
 
-    L_range = [0, 0.005, 0.01, 0.015, 0.02]
+    L_range = [0, 108000, 216000, 324000, 432000, 540000]
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
     for L in L_range:
         print(L)
-        light_cleavage = cleavage(7.95, L, 1)
+        light_cleavage = cleavage( 7.95, L, 1)
+        # print(light_intensity)
         sol = odeint(diff_eqs, y0, t)
-
-   # Pr_range= [50]
-    #for Pr in Pr_range:
-       # print(Pr)
-       # copy_number= copy(171,Pr,1)
-        #sol=odeint(diff_eqs, y0, t)
-
-        """plot output"""
-        asfont = {'fontname': 'Arial'}
-        hfont = {'fontname': 'Helvetica'}
-
-        #plt.plot(t, sol[:, 0])
-        #plt.plot(t, sol[:, 1])
+        plt.style.use('ggplot')
         plt.plot(t, sol[:, 2])
-        #plt.plot(t, sol[:, 3])
-        #plt.legend(['Rate of photocleavage', 'mRNA', 'Translated protein'], bbox_to_anchor=(1, 0.5))
+        """plot output"""
+        # We set the font we wanted for our graphs
+        asfont = {'fontname': 'Arial'}
 
-        plt.legend(['0 W/$m^2$', '0.005 W/$m^2$', '0.01 W/$m^2$', '0.015 W/$m^2$', '0.02 W/$m^2$'], loc='lower right')
-        #plt.title('Figure 1: Rate kinetics of cellular mechanisms with a light intensity of 0.02 W/$m^2$',**asfont
-        plt.ylabel('Concentration (uM)',**asfont)
-        plt.xlabel('Time (hr)',**asfont)
-        plt.title('Figure 2: Effect light intensity has on the rate of RFP expression', fontsize=10, y=1.08)
-        #plt.legend(loc=1, borderaxespad=0)
+        # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
+        plt.legend(['0 W/$m^2$', '108,000 W/$m^2$', '216,000 W/$m^2$', '324,000 W/$m^2$', '432,000 W/$m^2$', '540,000 W/$m^2$'], loc='center left',
+                   #bbox_to_anchor=(1, 0.5))
+        plt.ylabel('Concentration (uM)', **asfont)
+        plt.xlabel('Time (hr)', **asfont)
+        plt.legend(loc=1, borderaxespad=0)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-
     plt.show()

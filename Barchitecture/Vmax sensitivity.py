@@ -67,7 +67,7 @@ if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, 5, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
     #Km_array=[1,2,3,4,5,6,7,8,9,10]
-    v_array=[12000,14000,16000,18000,20000,22000,24000]
+    v_array=[ 216000, 360000, 579600, 178632000, 648000000, 2160000000]
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -102,10 +102,11 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 3])
 
         # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-        plt.legend(['10,000 1/hr', '12,000 1/hr', '14,000 1/hr', '16,000 1/hr', '18,000 1/hr', '20,000 1/hr', '22,000 1/hr', '24,000 1/hr'], loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.legend(['216000 1/hr', '360000 1/hr', '579600 1/hr', '178632000 1/hr', '648000000 1/hr', '2160000000 1/hr'], loc='center left', bbox_to_anchor=(1, 0.5))
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
-        plt.title('Effect changing Vmax has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+        #plt.title('Effect changing Vmax has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
         plt.legend(loc=1, borderaxespad=0)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+        plt.xlim((0, 5))
     plt.show()

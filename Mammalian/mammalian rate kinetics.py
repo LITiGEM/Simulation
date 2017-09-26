@@ -2,8 +2,8 @@ from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
 
-# k1: Rate at which PhoCl becomes cleaved
-# Here we create express k1 in terms of a function of light intensity (Hill equation)
+#k1: Rate at which PhoCl becomes cleaved
+#Here we create express k1 in terms of a function of light intensity (Hill equation)
 
 k1_rate_array = []
 #The array was created to add the values of k1 at the different light intensities examined
@@ -11,11 +11,11 @@ k1_rate_array = []
 
 def cleavage(K,L,n):
 
-    # K:Hill constant (W/m^2)
-    # n: Hill coefficient
-    # L: Light intensity (W/m^2)
+    #K: Hill constant (W/m^2)
+    #n: Hill coefficient
+    #L: Light intensity (W/m^2)
 
-    k1 = 720+(K*((L)**n)/(K+L))
+    k1 = (K*((L)**n)/(K+L))
 
     k1_rate_array.append(k1)
 
@@ -28,9 +28,9 @@ print (k1_rate_array)
 
 #def copy(K1,Pr,n):
 
-    # K1:Hill constant (umol/L)
-    # n: Hill coefficient
-    # Pr: Promoter concentration in the nucleus (umol/L)
+    #K1:Hill constant (umol/L)
+    #n: Hill coefficient
+    #Pr: Promoter concentration in the nucleus (umol/L)
     #cn = K1*((Pr)**n)/(Pr+K1)
 
     #cn_rate_array.append(cn)
@@ -58,19 +58,19 @@ def diff_eqs(y, t):
     a = 190.8 # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
     b = 3 # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
 
-    # Rate of PhoCL being cleaved by light and transmembrane protein complex being released in the cytoplasm
+    #Rate of PhoCL being cleaved by light and transmembrane protein complex being released in the cytoplasm
     dTF_dt = (light_cleavage*LACE)-(d1*TF)-(a*TF)
 
-    # Rate at which TF binds to the promoter in the nucleus
+    #Rate at which TF binds to the promoter in the nucleus
     #print(copy_number)
     #dTFb_dt = (TF*copy_number*a)
 
-    # Rate of transcription
+    #Rate of transcription
 
     dmRNA_dt = (k2*TF)-(d2*mRNA)-(b*mRNA)
 
-    # Rate of translation
-    Pt = 9.26 * (10 ** -6)  # Maximum concentration of Protein the cells can produce (umol/L)
+    #Rate of translation
+    Pt = 9.26 * (10 ** -6)  #Maximum concentration of Protein the cells can produce (umol/L)
     n = (1 - (P / (Pt)));
 
     dP_dt = (n*b*k3*mRNA)-(d3*P)
@@ -81,8 +81,8 @@ def diff_eqs(y, t):
     return sol
 
 if __name__ == "__main__":
-    time_steps = 100 # Number of timepoints to simulate
-    t = np.linspace(0, 5, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    time_steps = 10000 # Number o timepoints to simulate
+    t = np.linspace(0, 10, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     LACE = 1.54*(10**-7)  # Initial concentra0tion of the transmembrane protein complex (units)
@@ -95,37 +95,36 @@ if __name__ == "__main__":
     '''Pack intial conditions into an array'''
     y0 = [TF_0, mRNA_0, P_0]
 
-    L_range = [0.02]
-    # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
+    L_range = [540000]
+    #These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
     for L in L_range:
         print(L)
         light_cleavage = cleavage(7.95,L,1)
         sol = odeint(diff_eqs, y0, t)
 
-   # Pr_range= [50]
+    #Pr_range= [50]
 
     #for Pr in Pr_range:
-       # print(Pr)
-       # copy_number= copy(171,Pr,1)
+        #print(Pr)
+        #copy_number= copy(171,Pr,1)
         #sol=odeint(diff_eqs, y0, t)
-
-        """plot output"""
-        asfont = {'fontname': 'Arial'}
-        hfont = {'fontname': 'Helvetica'}
-
+        plt.style.use('ggplot')
         plt.plot(t, sol[:, 0])
         plt.plot(t, sol[:, 1])
         plt.plot(t, sol[:, 2])
-        #plt.plot(t, sol[:, 3])
-        #plt.legend(['Rate of photocleavage', 'Rate of Transcription', 'Rate of Translation'], bbox_to_anchor=(1, 0.5))
+        #plt.legend(['Free $TF_C$', '$mRNA_N$', 'RFP Protein'], bbox_to_anchor=(1, 0.5))
+        plt.legend(['RFP Protein'], bbox_to_anchor=(1, 0.5))
 
         #plt.legend(['0 W/$m^2$', '0.005 W/$m^2$', '0.01 W/$m^2$', '0.015 W/$m^2$', '0.02 W/$m^2$'], loc='lower right')
-        plt.title('Rate kinetics of mammalian cellular mechanisms with a light intensity of 0.02 W/$m^2$', fontsize=10, y=1.08)
+        #plt.title('Rate kinetics of mammalian cellular mechanisms with a light intensity of 0.02 W/$m^2$', fontsize=10, y=1.08)
 
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
+        plt.xlim((0,5))
+        plt.ylim((0,0.0000014))
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+
         #plt.title('Figure 2: Effect light intensity has on the rate of RFP expression', fontsize=10, y=1.08)
 
     plt.show()

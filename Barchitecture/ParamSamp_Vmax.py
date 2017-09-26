@@ -80,7 +80,7 @@ def SampleParam (paramValue,sigma, paramNum):
 if __name__ == "__main__":
 
     #We defined the time for which we would like our cellular mechanisms to run for
-    runTime = 200 #hours
+    runTime = 5 #hours
     time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, runTime, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally
 
@@ -103,6 +103,7 @@ if __name__ == "__main__":
         light_intensity = light(1545, L, 2, 6.554)
 
     v_array= SampleParam(510031, 250000, 10)
+    #50% of the actual value is my standard deviation
 
     #print(Km_array)
 
@@ -119,7 +120,7 @@ if __name__ == "__main__":
 
         plt.plot(t, sol[:,3])
 
-        v_arrayLabels.append(str(v) + 'uM')
+        v_arrayLabels.append(str(v) + '1/hr')
 
     """plot output"""
     #We set the fonts we wanted for our graphs
@@ -131,8 +132,9 @@ if __name__ == "__main__":
     plt.ylim(0)
     plt.xlabel('Time (hr)', **asfont)
     plt.xlim(0, runTime)
-    plt.title('Parameter Sampling for V$_{max}$ optimisation ',fontsize=10, y=1.08)
+    #plt.title('Parameter Sampling for V$_{max}$ optimisation ',fontsize=10, y=1.08)
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.legend(v_arrayLabels, loc='lower right')
+    plt.xlim((0, 5))
     plt.show()
