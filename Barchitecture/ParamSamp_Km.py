@@ -65,7 +65,7 @@ def diff_eqs(y,t):
 
     return sol
 
-# For good programming practice we created a function to allow us to randomly obtain values of light intensities
+# For good programming practice we created a function to allow us to randomly obtain values of Km
 # within a certain range, through using normal distributions.This saved us time and allowed us to plot multiple
 # light intensities on the same graph simultaneously
 def SampleParam (paramValue,sigma, paramNum):
