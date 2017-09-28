@@ -10,7 +10,6 @@ k1_rate_array = []
 # The array was created to add the values of k1 as different light intensities are examined
 
 def light(k, L, n, K1):
-    a = 444.6  # Basal expression level of the promoter (microM)
 
     # k: Maximum expression due to induction (a.u.)
     # K1:Hill constant (W/m^2)
@@ -18,7 +17,7 @@ def light(k, L, n, K1):
     # a: Basal expression level of the promoter (microM)
     # L: Light intensity (W)
 
-    k1 = a + ((k * ((L)) ^ n) / ((k) ^ n + ((L)) ^ n))
+    k1 = ((k * ((L)) ^ n) / ((K1) ^ n + ((L)) ^ n))
 
     k1_rate_array.append(k1)
 
@@ -40,9 +39,10 @@ def diff_eqs(y,t):
     k3 = (3600 / 660)  # Rate of translation (1/hr)
     d1 = 60 / 300  # Degradation of transcript (1/hr)
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
+    a = 27  # Basal expression level of the promoter (microM)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    dEL222dimer_dt = (light_intensity * (T) ** 2) - (k2 * EL222dimer)
+    dEL222dimer_dt = a + (light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
     # Rate of transcription
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
@@ -79,7 +79,7 @@ def SampleParam (paramValue,sigma, paramNum):
 if __name__ == "__main__":
 
     #We defined the time for which we would like our cellular mechanisms to run for
-    runTime = 5 #hours
+    runTime = 2 #hours
     time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, runTime, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally
 
@@ -99,9 +99,9 @@ if __name__ == "__main__":
 
     for L in L_range:
 
-        light_intensity = light(1545, L, 2, 6.554)
+        light_intensity = light(1545, L, 2, int(6.55))
 
-    Km_array= (SampleParam(1470, 200, 10))/1000000
+    Km_array= (SampleParam(1470, 735, 10))/1000000
 
     print(Km_array)
 

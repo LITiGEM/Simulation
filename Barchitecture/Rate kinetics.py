@@ -7,20 +7,23 @@ import matplotlib.pyplot as plt
 
 k1_rate_array = []
 # The array was created to add the values of k1 as different light intensities are examined
+k1=0
 
 def light(k, L, n, K1):
 
     # k: Maximum expression due to induction (a.u.)
-    # K1:Hill constant (W/m^2)
+    # K1:Hill constant (W/cm^2)
     # n: Hill coefficient (dimensionless)
     # a: Basal expression level of the promoter (microM)
     # L: Light intensity (W)
 
-    k1 = ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
+    k1 = ((k * (L) ^ n) / ((K1) ^ n + (L) ^ n))
 
     k1_rate_array.append(k1)
 
     return k1
+
+print(k1)
 
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
@@ -70,7 +73,8 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 7,time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    time_stop = 10
+    t = np.linspace(0, time_stop,time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -83,11 +87,11 @@ if __name__ == "__main__":
     y0 = [EL222dimer_0, mRNA_0, Intiminintracellular_0, Intiminsurface_0]
 
     # We used the optimum light intensity to find the rate limiting step within its rate kinetics
-    L_range = [70]
+    L_range = [60]
 
     for L in L_range:
         #print(L)
-        light_intensity = light(1545, L, 2, 6.554)
+        light_intensity = light(1545, L, 2, int(6.554))
         #print(light_intensity)
         sol = odeint(diff_eqs, y0, t)
 
@@ -95,17 +99,19 @@ if __name__ == "__main__":
         # We set the font we wanted for our graphs
         asfont = {'fontname':'Arial'}
         plt.style.use('ggplot')
-        #plt.plot(t, sol[:, 0])
-        #plt.plot(t, sol[:, 1])
-        #plt.plot(t, sol[:, 2])
+        plt.plot(t, sol[:, 0])
+        plt.plot(t, sol[:, 1])
+        plt.plot(t, sol[:, 2])
         plt.plot(t, sol[:, 3])
 
-    #plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
-    plt.legend(['Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
+    plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'bottom right', bbox_to_anchor=(1, 0.5))
+    #plt.legend(['Surface expressed Intimin'],loc= 'right', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
     #plt.title('Current transport of intimin to the cell surface', fontsize=10, y=1.08)
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+    plt.xlim((0,time_stop))
+    plt.ylim((0,0.00003))
 
 plt.show()

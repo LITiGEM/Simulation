@@ -35,7 +35,7 @@ def diff_eqs(y, t):
     k3 = 12  # Rate of translation (1/hr)
     d1 = 60 / 13  # Degradation of transcription factors (1/hr)
     d2 = 1.68  # Degradation of mRNA (1/hr)
-    d3 = 1.86  # Degradation of translated protein (1/hr)
+    #d3 = 1.86  # Degradation of translated protein (1/hr)
     a = 190.8  # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
     b = 180  # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
 
@@ -63,7 +63,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 10000  # Number of timepoints to simulate
-    stop_time = 6
+    stop_time = 14
     t= np.linspace( 0, stop_time, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
@@ -77,12 +77,16 @@ if __name__ == "__main__":
 
     y0 = [TF_0, mRNA_0, P_0]
 
-    L_range = [0, 10.8, 21.6, 32.4, 43.2, 54]
-    # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
+    L_range = [43]
 
     for L in L_range:
-        print(L)
         light_cleavage = cleavage(L)
+
+    d3_range = [0.0012, 0.0021, 0.0031, 0.0050, 0.077, 1.01, 1.19]
+    # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
+
+    for i in d3_range:
+        d3=i
         sol = odeint( diff_eqs, y0, t)
         plt.style.use('ggplot')
         plt.plot(t, sol[:, 2])
@@ -92,10 +96,10 @@ if __name__ == "__main__":
     asfont = {'fontname': 'Arial'}
 
     # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-    plt.legend([ '0 W/$cm^2$', '11 W/$cm^2$', '22 W/$cm^2$', '32 W/$cm^2$', '43 W/$cm^2$', '54 W/$cm^2$'], loc='center left', bbox_to_anchor=( 1, 0.5))
+    plt.legend(['0.0012 1/hr', '0.0021 1/hr', '0.0031 1/hr', '0.0050 1/hr', '0.077 1/hr', '1.01 1/hr', '1.19 1/hr'], loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)', **asfont)
     plt.xlabel('Time (hr)', **asfont)
     plt.ticklabel_format( style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0, stop_time))
-    plt.ylim((0, 0.0000017))
+    #plt.ylim((0, 0.0000012))
     plt.show()

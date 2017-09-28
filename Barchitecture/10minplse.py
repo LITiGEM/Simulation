@@ -6,7 +6,12 @@ import math
 k1_pulsing_array =[]
 
 light_pulsing=0
-k1=458.4
+#The rate of photocleavage is dependant on the light intensity of the light. We optimised the light intensity we will
+#be using in our optogenetic technology, therefore the rate of photoactivation can be calculated from the equation below:
+#k1 = ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
+#where: k= 1,545 W/cm^2 ; L= 60 W/cm^2 ; n= 2; K1= 6.55
+k1=27
+
 k1_pulse =0
 
 def pulsing(t2):
@@ -117,5 +122,7 @@ if __name__ == "__main__":
     #plt.legend(['Transport to the cell surface'], loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
-    plt.xlim((0,25))
+    plt.xlim((0, 25))
+    plt.ylim((0, 0.00000000011))
+
 plt.show()

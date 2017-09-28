@@ -11,15 +11,13 @@ k1_rate_array = []
 # The array was created to add the values of k1 as different light intensities are examined
 
 def light(k, L, n, K1):
-    a = 444.6  # Basal expression level of the promoter (microM)
-
     # k: Maximum expression due to induction (a.u.)
     # K1:Hill constant (W/m^2)
     # n: Hill coefficient (dimensionless)
     # a: Basal expression level of the promoter (microM)
     # L: Light intensity (W)
 
-    k1 = a + ((k * ((L)) ^ n) / ((k) ^ n + ((L)) ^ n))
+    k1 =((k * ((L)) ^ n) / ((K1) ^ n + ((L)) ^ n))
 
     k1_rate_array.append(k1)
 
@@ -42,8 +40,10 @@ def diff_eqs(y,t):
     d1 = 60 / 300  # Degradation of transcript (1/hr)
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
+    a = 27  # Basal expression level of the promoter (microM)
+
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    dEL222dimer_dt = (light_intensity * (T) ** 2) - (k2 * EL222dimer)
+    dEL222dimer_dt = a + (light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
     # Rate of transcription
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
@@ -80,12 +80,12 @@ def SampleParam (paramValue,sigma, paramNum):
 if __name__ == "__main__":
 
     #We defined the time for which we would like our cellular mechanisms to run for
-    runTime = 5 #hours
-    time_steps = 1000  # Number of timepoints to simulate
+    runTime = 2 #hours
+    time_steps = 100000  # Number of timepoints to simulate
     t = np.linspace(0, runTime, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally
 
     '''Set initial species concentration values'''
-    T = 2.37 * (10 ** -4)  # Initial concentration of inactive EL222 monomers (microM/L)
+    EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of inactive EL222 monomers (microM/L)
     EL222dimer_0 = 0  # Starting concentration of dimerised EL222 bound to the promoter (microM/L)
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     Intiminintracellular_0 = 0  # Starting intimin concentration in the cells (microM/L)
@@ -100,9 +100,9 @@ if __name__ == "__main__":
 
     for L in L_range:
 
-        light_intensity = light(1545, L, 2, 6.554)
+        light_intensity = light(1545, L, 2, int(6.55))
 
-    v_array= SampleParam(510031, 250000, 10)
+    v_array= SampleParam(510031, 25000, 10)
     #50% of the actual value is my standard deviation
 
     #print(Km_array)
@@ -136,5 +136,6 @@ if __name__ == "__main__":
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.legend(v_arrayLabels, loc='lower right')
-    plt.xlim((0, 5))
+    plt.xlim((0, runTime))
+    #plt.ylim((0,))
     plt.show()

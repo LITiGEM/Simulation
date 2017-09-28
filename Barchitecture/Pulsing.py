@@ -6,7 +6,12 @@ import math
 k1_pulsing_array =[]
 
 light_pulsing=0
-k1=458.4
+#The rate of photocleavage is dependant on the light intensity of the light. We optimised the light intensity we will
+#be using in our optogenetic technology, therefore the rate of photoactivation can be calculated from the equation below:
+#k1 = ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
+#where: k= 1,545 W/cm^2 ; L= 60 W/cm^2 ; n= 2; K1= 6.55
+
+k1=27
 k1_pulse=0
 
 def pulsing(t2):
@@ -68,7 +73,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     #time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 15, 1000)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    t = np.linspace(0, 15, 10000)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     T = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -114,7 +119,7 @@ if __name__ == "__main__":
     plt.plot(t, sol[:, 2])
     plt.plot(t, sol[:, 3])
     #plt.title('Visualising the effect 1 pulse has on rate kinetics', fontsize=10, y=1.08)
-    plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'centre right', bbox_to_anchor=(1, 0.5))
+    plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'right', bbox_to_anchor=(1, 0.5))
         #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)

@@ -1,47 +1,42 @@
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
-#k1: Rate at which PhoCl becomes cleaved
-#Here we create express k1 in terms of a function of light intensity (Hill equation)
+k1_pulsing_array =[]
+light_pulsing=0
+k1_pulse=0
+
+#The rate of photocleavage is dependant on the light intensity of the light. We optimised the light intensity we will
+#be using in our optogenetic technology, therefore the rate of photoactivation can be calculated from the equation below:
+#k1 = (K*((L)**n)/(K+L))
+#where: K= 7.95 W/cm^2 ; L= 27 W/cm^2 ; n= 1
+
+k1= 6.14
+
+def pulsing(t2):
+    ON=43200/86400
+
+    if t2>12:
+            k1_pulse=0
+
+    elif t2<0:
+            k1_pulse=0
+
+    else:
+            k1_pulse=k1*(math.sin(((t2/24-math.floor(t2/24)))*math.pi/(1-ON)))
+
+    #k1_pulsing_array.append(k1_pulse)
+
+    return k1_pulse
 
 k1_rate_array = []
-#The array was created to add the values of k1 at the different light intensities examined
-#copy_number= 0;
 
-def cleavage(K,L,n):
-
-    #K: Hill constant (W/cm^2)
-    #n: Hill coefficient
-    #L: Light intensity (W/cm^2)
-
-    k1 = (K*((L)**n)/(K+L))
-
-    k1_rate_array.append(k1)
-
-    return k1
-
-print (k1_rate_array)
-
-#cn_rate_array = []
-#The array was created to add the values of cn at the different promoter concentrations examined
-
-#def copy(K1,Pr,n):
-
-    #K1:Hill constant (umol/L)
-    #n: Hill coefficient
-    #Pr: Promoter concentration in the nucleus (umol/L)
-    #cn = K1*((Pr)**n)/(Pr+K1)
-
-    #cn_rate_array.append(cn)
-
-    #return cn
-
-#print (cn_rate_array)
 
 def diff_eqs(y, t):
     '''This function contains the differential equations'''
 
+    light_pulsing = pulsing(t)
     """Unpacking y"""
     TF = y[0]  # Bound transbembrane protein by PhoCl
     #TFb = y[1]  #Transcrption (microM/L)
@@ -59,7 +54,7 @@ def diff_eqs(y, t):
     b = 180 # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
 
     #Rate of PhoCL being cleaved by light and transmembrane protein complex being released in the cytoplasm
-    dTF_dt = (light_cleavage*LACE)-(d1*TF)-(a*TF)
+    dTF_dt = (light_pulsing*LACE)-(d1*TF)-(a*TF)
 
     #Rate at which TF binds to the promoter in the nucleus
     #print(copy_number)
@@ -82,7 +77,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 100000 # Number o timepoints to simulate
-    stop_time = 6
+    stop_time = 14
     t = np.linspace(0, stop_time, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
@@ -100,15 +95,26 @@ if __name__ == "__main__":
 
     for L in L_range:
         print(L)
-        light_cleavage = cleavage(7.95,L,1)
+
+    t2_range = np.array([0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000])
+
+    for t2 in t2_range:
+        # print(t)
+        light_pulsing = pulsing(t2)
+        #  print(light_pulsing)
         sol = odeint(diff_eqs, y0, t)
 
-        plt.style.use('ggplot')
-        plt.plot(t, sol[:, 0])
-        plt.plot(t, sol[:, 1])
-        plt.plot(t, sol[:, 2])
-
+    """plot output"""
     asfont = {'fontname': 'Arial'}
+    hfont = {'fontname': 'Helvetica'}
+
+    plt.style.use('ggplot')
+    plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+    plt.ticklabel_format(style='sci', axis='x')
+    plt.plot(t, sol[:, 0])
+    plt.plot(t, sol[:, 1])
+    plt.plot(t, sol[:, 2])
+
     plt.legend(['Free $TF_C$', '$mRNA_N$', 'RFP Protein'], bbox_to_anchor=(1, 0.5))
     #plt.legend(['Free $TF_C$'], bbox_to_anchor=(1, 0.5))
     #plt.legend(['0 W/$m^2$', '0.005 W/$m^2$', '0.01 W/$m^2$', '0.015 W/$m^2$', '0.02 W/$m^2$'], loc='lower right')
@@ -116,9 +122,9 @@ if __name__ == "__main__":
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
     plt.xlim((0,stop_time))
-    #plt.ylim((0,0.00000155))
+    plt.ylim((0,0.0000016))
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 
+plt.show()
     #plt.title('Figure 2: Effect light intensity has on the rate of RFP expression', fontsize=10, y=1.08)
 
-    plt.show()
