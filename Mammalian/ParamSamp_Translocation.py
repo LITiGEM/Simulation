@@ -73,8 +73,8 @@ def SampleParam (paramValue,sigma, paramNum):
 # normal distribution arrays, which we could not concatenate with our other arrays
 
 if __name__ == "__main__":
-    time_steps = 10000  # Number of timepoints to simulate
-    stop_time = 14
+    time_steps = 100000  # Number of timepoints to simulate
+    stop_time = 2.5
     t= np.linspace( 0, stop_time, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
@@ -93,20 +93,25 @@ if __name__ == "__main__":
     for L in L_range:
         light_cleavage = cleavage(L)
 
-    b_range = (SampleParam(,,8))
+    b_range = (SampleParam(3227,1500,6))
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
-    b_rangeLabels= []
+    #b_range= [ 0.0000198, 2.988, 29.88, 144, 7920]
+    b_rangeLabels = []
 
     for i in b_range:
-        b=i
+        b = i
         sol = odeint( diff_eqs, y0, t)
 
         plt.style.use('ggplot')
 
         plt.plot(t, sol[:, 2])
 
-        b_rangeLabels.append(str(b) + '1/hr')
+        b1 = b/3600
+
+        b2 = "{0:0.1E}".format(b1)
+
+        b_rangeLabels.append(str(b2) + ' 1/s')
 
     """plot output"""
     # We set the font we wanted for our graphs
@@ -114,10 +119,10 @@ if __name__ == "__main__":
 
     # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
     #plt.legend([ '0 W/$cm^2$', '11 W/$cm^2$', '22 W/$cm^2$', '32 W/$cm^2$', '43 W/$cm^2$', '54 W/$cm^2$'], loc='center left', bbox_to_anchor=( 1, 0.5))
+    plt.legend(b_rangeLabels, loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)', **asfont)
     plt.xlabel('Time (hr)', **asfont)
     plt.ticklabel_format( style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0, stop_time))
-    plt.legend(d3_rangeLabels, loc='lower right')
-    #plt.ylim((0, 0.0000012))
+    plt.ylim((0, 0.0000018))
     plt.show()

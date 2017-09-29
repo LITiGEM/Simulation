@@ -16,7 +16,7 @@ def light(k, L, n, K1):
     # a: Basal expression level of the promoter (a. u)
     # L: Light intensity (W)
 
-    k1 = ((k * (L) ^ n) / ((k) ^ n + (L) ^ n))
+    k1 = ((k * (L) ^ n) / ((K1) ^ n + (L) ^ n))
 
     k1_rate_array.append(k1)
 
@@ -65,7 +65,8 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 5, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    time_stop = 5
+    t = np.linspace(0, time_stop, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
     EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
@@ -84,7 +85,7 @@ if __name__ == "__main__":
 
     for L in L_range:
         print(L)
-        light_intensity = light(1545, L, 2, 6.554)
+        light_intensity = light(1545, L, 2, int(6.554))
         #print(light_intensity)
 
         sol = odeint(diff_eqs,y0,t)
@@ -97,10 +98,12 @@ if __name__ == "__main__":
 
         # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
         #plt.legend(['V_max= 24,000 1/hr and Km= 1 uM'], loc='center left', bbox_to_anchor=(1, 0.5))
-        plt.legend(['Surface expressed Intimin'], loc='centre right', bbox_to_anchor=(1, 0.5))
+        plt.legend(['Surface expressed Intimin'], loc='center left', bbox_to_anchor=(1, 0.5))
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
-        plt.title('Optimised Light Intensity (70 W/$m^2$) $V_{max}$(24,000 1/hr)and Km (1 uM) conditions ', fontsize=10, y=1.08)
+        #plt.title('Optimised Light Intensity (70 W/$m^2$) $V_{max}$(24,000 1/hr)and Km (1 uM) conditions ', fontsize=10, y=1.08)
         plt.legend(loc=1, borderaxespad=0)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+        plt.xlim((0,time_stop))
+        plt.ylim((0, 0.0000016))
     plt.show()

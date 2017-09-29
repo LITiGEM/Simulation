@@ -32,7 +32,7 @@ def CostIntensity(L):
 
     return cost
 
-L_range = [ 0, 0.0018, 0.0035, 0.0053, 0.007]
+L_range = [ 0, 0.00194, 0.00389, 0.00583, 0.0078, 0.00972]
 #L_range array represents the price per hour for: [ 0 W/m^2, 10 W/m^2, 20 W/m^2, 30 W/m^2, 40 W/m^2, 50 W/m^2, 60 W/m^2, 70 W/m^2]
 
 #P_range = [ 120, 80,  60, 45, 30, 15, 0]

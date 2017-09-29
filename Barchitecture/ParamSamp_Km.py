@@ -39,7 +39,7 @@ def diff_eqs(y,t):
     k3 = (3600 / 660)  # Rate of translation (1/hr)
     d1 = 60 / 300  # Degradation of transcript (1/hr)
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
-    a = 27  # Basal expression level of the promoter (microM)
+    a = ((400 / 2000) * (5 * (10 ** -10))) / 100  # Basal promoter expression
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
     dEL222dimer_dt = a + (light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     t = np.linspace(0, runTime, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally
 
     '''Set initial species concentration values'''
-    T = 2.37 * (10 ** -4)  # Initial concentration of inactive EL222 monomers (microM/L)
+    EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of inactive EL222 monomers (microM/L)
     EL222dimer_0 = 0  # Starting concentration of dimerised EL222 bound to the promoter (microM/L)
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     Intiminintracellular_0 = 0  # Starting intimin concentration in the cells (microM/L)
@@ -118,7 +118,11 @@ if __name__ == "__main__":
 
         plt.plot(t, sol[:,3])
 
-        Km_arrayLabels.append(str(Km) + '1/hr')
+        Km1 = Km/3600
+
+        Km2 = "{0:0.1E}".format(Km1)
+
+        Km_arrayLabels.append(str(Km2) + ' uM')
 
     """plot output"""
     #We set the fonts we wanted for our graphs
@@ -126,12 +130,14 @@ if __name__ == "__main__":
     hfont = {'fontname': 'Helvetica'}
 
     #We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
+    plt.legend(Km_arrayLabels, loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)', **asfont)
     plt.ylim(0)
     plt.xlabel('Time (hr)', **asfont)
     plt.xlim(0, runTime)
+    plt.ylim((0, 0.0000075))
     #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface ',fontsize=10, y=1.08)
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-    plt.legend(Km_arrayLabels, loc='lower right')
+
     plt.show()

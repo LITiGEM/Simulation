@@ -46,8 +46,9 @@ def diff_eqs(y, t):
     d2 = 60/20 #72 #60/20 # Degradation of protein (Half-life of E.coli) (1/hr)
     d3= (60/20) #72 #60/20 #half-life of intimin (1/hr)
     light_pulsing = pulsing(t)
+    a = ((400 / 2000) * (5 * (10 ** -10))) / 100  # Basal promoter expression
     # Rate of EL222 being activated by light and binding to the promoter
-    dB_dt = (light_pulsing* (T) ** 2) - (k2 * B)
+    dB_dt = a+(light_pulsing* (T) ** 2) - (k2 * B)
 
     # Rate of transcription
     dmRNA_dt = (k2 * B) - (d1 * mRNA) - (k3 * mRNA)

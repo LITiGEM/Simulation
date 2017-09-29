@@ -82,7 +82,7 @@ if __name__ == "__main__":
     for L in L_range:
         light_cleavage = cleavage(L)
 
-    b_range = []
+    b_range = [0.0000198, 2.988, 29.88, 144, 7920]
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
     for i in b_range:
@@ -96,10 +96,10 @@ if __name__ == "__main__":
     asfont = {'fontname': 'Arial'}
 
     # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-    plt.legend([ '0 1/hr', '0 1/hr', '0 1/hr', '0 1/hr', '0 1/hr', '0 1/hr'], loc='center left', bbox_to_anchor=( 1, 0.5))
+    plt.legend([ '5.5E-09 1/s', '8.3E-04 1/s', '8.3E-03 1/s', '4E-02 1/s', '2.2E+00 1/s'], loc='center left', bbox_to_anchor=( 1, 0.5))
     plt.ylabel('Concentration (uM)', **asfont)
     plt.xlabel('Time (hr)', **asfont)
     plt.ticklabel_format( style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0, stop_time))
-    #plt.ylim((0, 0.0000012))
+    plt.ylim((0, 0.0000018))
     plt.show()

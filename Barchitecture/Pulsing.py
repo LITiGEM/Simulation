@@ -45,8 +45,9 @@ def diff_eqs(y, t):
     d1 = 60/300 # Degradation of transcript (1/hr)
     d2 = 60/20 # Degradation of protein (Half-life of E.coli) (1/hr)
     d3= 60/20 #half-life of intimin (1/hr)
+    a = ((400 / 2000) * (5 * (10 ** -10))) / 100  # Basal promoter expression
     light_pulsing = pulsing(t)
-    a = ((400 / 2000) * (5 ** -10)) * 100  # We modelled it at 0.2 of the maximal expression rate
+
     # Rate of EL222 being activated by light and binding to the promoter
     dB_dt = a+(light_pulsing* (T) ** 2) - (k2 * B)
 
@@ -119,11 +120,11 @@ if __name__ == "__main__":
     plt.plot(t, sol[:, 2])
     plt.plot(t, sol[:, 3])
     #plt.title('Visualising the effect 1 pulse has on rate kinetics', fontsize=10, y=1.08)
-    plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'right', bbox_to_anchor=(1, 0.5))
+    plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc='center left', bbox_to_anchor=(1, 0.5))
         #plt.title('Figure 2: Effect light intensity has on the rate of intimin expression on the cell surface',**asfont )
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
     plt.xlim((0, 15))
-
+    plt.ylim((0, 0.0000005))
         #plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.show()

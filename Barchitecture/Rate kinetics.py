@@ -99,19 +99,19 @@ if __name__ == "__main__":
         # We set the font we wanted for our graphs
         asfont = {'fontname':'Arial'}
         plt.style.use('ggplot')
-        plt.plot(t, sol[:, 0])
-        plt.plot(t, sol[:, 1])
-        plt.plot(t, sol[:, 2])
+        #plt.plot(t, sol[:, 0])
+        #plt.plot(t, sol[:, 1])
+        #plt.plot(t, sol[:, 2])
         plt.plot(t, sol[:, 3])
 
-    plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'bottom right', bbox_to_anchor=(1, 0.5))
-    #plt.legend(['Surface expressed Intimin'],loc= 'right', bbox_to_anchor=(1, 0.5))
+    #plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'center left', bbox_to_anchor=(1, 0.5))
+    plt.legend(['Surface expressed Intimin'],loc= 'center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
     #plt.title('Current transport of intimin to the cell surface', fontsize=10, y=1.08)
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0,time_stop))
-    plt.ylim((0,0.00003))
+    #plt.ylim((0,0.00003))
 
 plt.show()

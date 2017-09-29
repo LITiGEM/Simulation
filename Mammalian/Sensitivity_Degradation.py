@@ -96,10 +96,10 @@ if __name__ == "__main__":
     asfont = {'fontname': 'Arial'}
 
     # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-    plt.legend(['0.0012 1/hr', '0.0021 1/hr', '0.0031 1/hr', '0.0050 1/hr', '0.077 1/hr', '1.01 1/hr', '1.19 1/hr'], loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.legend(['3.3E-07 1/s', '5.8E-07 1/s', '1.4E-06 1/s', '1E-05 1/s', '2E-05 1/s', '2.8E-04 1/s', '3.3E-04 1/s'], loc='bottom left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)', **asfont)
     plt.xlabel('Time (hr)', **asfont)
     plt.ticklabel_format( style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0, stop_time))
-    #plt.ylim((0, 0.0000012))
+    plt.ylim((0, 0.00001))
     plt.show()

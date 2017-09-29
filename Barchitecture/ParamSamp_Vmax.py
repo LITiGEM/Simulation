@@ -40,7 +40,7 @@ def diff_eqs(y,t):
     d1 = 60 / 300  # Degradation of transcript (1/hr)
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
-    a = 27  # Basal expression level of the promoter (microM)
+    a = ((400 / 2000) * (5 * (10 ** -10))) / 100  # Basal promoter expression
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
     dEL222dimer_dt = a + (light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     #We defined the time for which we would like our cellular mechanisms to run for
     runTime = 2 #hours
-    time_steps = 100000  # Number of timepoints to simulate
+    time_steps = 1000  # Number of timepoints to simulate
     t = np.linspace(0, runTime, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally
 
     '''Set initial species concentration values'''
@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
         light_intensity = light(1545, L, 2, int(6.55))
 
-    v_array= SampleParam(510031, 25000, 10)
+    v_array= SampleParam(510031, 150000, 10)
     #50% of the actual value is my standard deviation
 
     #print(Km_array)
@@ -120,7 +120,11 @@ if __name__ == "__main__":
 
         plt.plot(t, sol[:,3])
 
-        v_arrayLabels.append(str(v) + '1/hr')
+        v1 = v/3600
+
+        v2 = "{0:0.1E}".format(v1)
+
+        v_arrayLabels.append(str(v2) + ' 1/s')
 
     """plot output"""
     #We set the fonts we wanted for our graphs
@@ -128,6 +132,7 @@ if __name__ == "__main__":
     hfont = {'fontname': 'Helvetica'}
 
     #We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
+    plt.legend(v_arrayLabels, loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)', **asfont)
     plt.ylim(0)
     plt.xlabel('Time (hr)', **asfont)
@@ -135,7 +140,7 @@ if __name__ == "__main__":
     #plt.title('Parameter Sampling for V$_{max}$ optimisation ',fontsize=10, y=1.08)
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-    plt.legend(v_arrayLabels, loc='lower right')
+
     plt.xlim((0, runTime))
-    #plt.ylim((0,))
+    #plt.ylim((0, 0.0000007))
     plt.show()

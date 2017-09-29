@@ -24,17 +24,16 @@ def cleavage(K,L,n):
 print (k1_rate_array)
 
 #cn_rate_array = []
+
 #The array was created to add the values of cn at the different promoter concentrations examined
 
 #def copy(K1,Pr,n):
-
     #K1:Hill constant (umol/L)
+
     #n: Hill coefficient
     #Pr: Promoter concentration in the nucleus (umol/L)
     #cn = K1*((Pr)**n)/(Pr+K1)
-
     #cn_rate_array.append(cn)
-
     #return cn
 
 #print (cn_rate_array)
@@ -50,13 +49,13 @@ def diff_eqs(y, t):
 
     """Set rate constants"""  # we made these numbers up we are now looking into fixing them and adding rate equations for the k values
 
-    k2 =  57.6 # Rate of transcription per transcript (1/hr)
+    k2 = 57.6 # Rate of transcription per transcript (1/hr)
     k3 = 12 # Rate of translation (1/hr)
     d1= 60/13 # Degradation of transcription factors (1/hr)
     d2 = 1.68 # Degradation of mRNA (1/hr)
-    d3 = 1.86 # Degradation of translated protein (1/hr)
+    d3 = 0.291 # Degradation of translated protein (1/hr)
     a = 190.8 # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
-    b = 180 # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
+    b = 47391 # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
 
     #Rate of PhoCL being cleaved by light and transmembrane protein complex being released in the cytoplasm
     dTF_dt = (light_cleavage*LACE)-(d1*TF)-(a*TF)
@@ -82,7 +81,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 100000 # Number o timepoints to simulate
-    stop_time = 6
+    stop_time = 12
     t = np.linspace(0, stop_time, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
@@ -116,8 +115,7 @@ if __name__ == "__main__":
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
     plt.xlim((0,stop_time))
-    #plt.ylim((0,0.000000005))
-    plt.ylim((0,0.00000155))
+    #plt.ylim((0,0.00000155))
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 
     #plt.title('Figure 2: Effect light intensity has on the rate of RFP expression', fontsize=10, y=1.08)
