@@ -26,17 +26,28 @@ Visual representation of the cell adhesion; where the two binding partners SpyTa
 
 LIT Mammalian Cells Model (LAME Model) 
 Optimization of rate kinetics for the photoactivation of the dCAS9 – p65 construct. The system is induced by the photo cleaving of the linker PhoCl with violet light. 
+- 2hourpulses.py
+- Costing_BestLightIntensities.py
+- Costing_Optimized.py
+- Costing_Pulsing.py
 - mammalian light intensity.py
 - mammalian rate kinetics.py
+- Optimised conditions.py
+- ParamSamp_Degradation.py
+- ParamSamp_Translocation.py
+- Pulsing.py
+- Sensitivity_Degradation.py
+- Sensitivity_Translocation.py
+
 
 LIT bulb Model  (OptoFlux Model) 
 This model optimizes the dimensions of the LIT bulb. Parameters were optimized to allow for the highest rate of sugar production within the light bulb, as this would maximise the amount of luminescence emitted from the bulb. The following parameters are optimized: diameter of the LIT bulb, incoming Photon Flux Density and biomass concentration of cyanobacteria. 
--  bulbST.m
+- bulbST.m
 - Cyano.mat
--OptimiseCx.m
+- OptimiseCx.m
 - OptimiseDiameter.m
 - OptimiseIph0.m
--  PAR_Norm.mat
+- PAR_Norm.mat
 
 
 LIT UCL iGEM would like to thank Dr Christopher Barnes (UCL, Department of Cell & Developmental Biology), Dr Darren Nesbeth (UCL, Department of Biochemical Engineering) Dr Alexandros Kiparissides (UCL, Department of Biochemical Engineering), Behzad Karkaria (PhD student, UCL, Department of Cell & Developmental Biology), and Maximilien Rothier Bautzer (MRes, UCL, Department of Biochemical Engineering) for the support and assistance they gave to the modelling team throughout the summer.  
