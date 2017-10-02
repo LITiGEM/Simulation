@@ -1,7 +1,11 @@
  
 #LIT simulation
+
 This repository contains all the modelling code of the UCL 2017 iGEM team
+
+
 ##File Description
+
 The UCL iGEM 2017 team developed a range of models that simulate and optimize parameters that affect cellular mechanisms in different areas of light induced technologies (LIT). All the work will be presented in November 2017 at the international Jamboree in Boston. 
 Four models were developed by the team. The codes contained in this file have been created using the programming languages Python and MATLAB.
 This file contains the following models:
