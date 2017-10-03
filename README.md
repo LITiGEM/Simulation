@@ -12,24 +12,33 @@ This file contains the following models:
 LIT Barchitecture Model (LEGIT Model) 
 Optimization of rate kinetics for the expression of a surface protein (intimin).
 The construct is induced with blue light (450 nm), the effect of light induction is tested in 2 ways: light intensity used and light pulsing. This directory includes parameter optimisation (i.e. Sensitivity Analysis and Parameter Sampling) as well as a cost analysis. 
+
 - 10minplse.py
-- india.py
+- Costing_BestLightIntensity.py
+- Costing_Optimized.py
+- Costing_Pulsing.py
 - Intensity intimin expression.py
+- Km sensitivity.py
+- Optimised conditions.py
+- ParamSamp_Km.py
+- ParamSamp_Vmax.py
 - Pulsing.py
 - Rate kinetics.py
-- Sensitivity Analysis.py
+- Vmax sensitivity.py
 
 Game of LIT Model (GOLIT Model) 
 Variation of Conway’s Game of Life
 Visual representation of the cell adhesion; where the two binding partners SpyTag and SpyCatcher bind to each other. Implementation of genetic algorithm to determine the optimal starting condition before running the game. 
+
 - GameOfLit.m
-- LOGO.m
 - run_GameOfLit.m
+- LOGO.m
 - run_LOGO.m
 - LIT.py
 
 LIT Mammalian Cells Model (LAME Model) 
 Optimization of rate kinetics for the photoactivation of the dCAS9 – p65 construct. The system is induced by the photo cleaving of the linker PhoCl with violet light. 
+
 - 2hourpulses.py
 - Costing_BestLightIntensities.py
 - Costing_Optimized.py
