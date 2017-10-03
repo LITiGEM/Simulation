@@ -1,4 +1,4 @@
-function GameOfLit(length, height, bound, unbound, genNum,time_pause)
+function GeneticAlgorithm(length, height, bound, unbound, genNum,time_pause)
 % initialise the model framework
 % height =  number of cells along the y axis
 % length = number of cells along x axis
@@ -48,39 +48,39 @@ for g=1:genNum;
                         end
                     end
                 end
-                neighbour(i,j)= grid; %function of neighbours of cells (i,j)
+                neighbour (i,j)= grid; %function of neighbours of cells (i,j)
             end
         end
     end
     
-    load('S_70.mat') %load the file with the cell concentration for each light intensity, 
+    load('S_35.mat') %load the file with the cell concentration for each light intensity, 
     
     % update the grid
     % define the rules of the game
     for i=1:length;
         for j=1:height;
             if neighbour(i,j)==1 %for 1 neighbour
-                if rand<=0.60*S_70(g,2); %generate random numbers btw 0 and 1, they will bind according to the probability and the given cell conentration value (S) 
+                if rand<= 0.14*S_35(g,2); %generate random numbers btw 0 and 1, they will bind according to the probability and the given cell conentration value (S) 
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
                 end
             elseif neighbour(i,j)==2;
-                if rand<=0.80*S_70(g,2);
+                if rand<=0.27*S_35(g,2);
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
                 end
             elseif  neighbour(i,j)==3;
-                if rand<=0.90*S_70(g,2);
+                if rand<=0.18*S_35(g,2);
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
                 end
             elseif neighbour(i,j)==4;
-                if rand<=0.99*S_70(g,2);
+                if rand<=0.92*S_35(g,2);
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
                 end
             else neighbour(i,j)=0;
-                if rand<=0.2*S_70(g,2);
+                if rand<=0.26*S_35(g,2);
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
                 end
