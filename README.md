@@ -12,11 +12,18 @@ LIT Barchitecture Model (LEGIT Model)
 Optimization of rate kinetics for the expression of a surface protein (intimin).
 The construct is induced with blue light (450 nm), the effect of light induction is tested in 2 ways: light intensity used and light pulsing. This directory includes parameter optimisation (i.e. Sensitivity Analysis and Parameter Sampling) as well as a cost analysis. 
 - 10minplse.py
-- india.py
+- Costing_BestLightIntensity.py
+- Costing_Optimized.py
+- Costing_Pulsing.py
 - Intensity intimin expression.py
+- Km sensitivity.py
+- Optimised conditions.py
+- ParamSamp_Km.py
+- ParamSamp_Vmax.py
 - Pulsing.py
 - Rate kinetics.py
-- Sensitivity Analysis.py
+- Vmax sensitivity.py
+
 
 Game of LIT Model (GOLIT Model) 
 Variation of Conway’s Game of Life
