@@ -276,7 +276,7 @@ if __name__ == "__main__":
 
     GenSetAgent(100, 0.7, 0.5, 0.6, 0.3, 0.2)
 
-    grid = NewGrid(20,20)
+    grid = NewGrid(50,50)
 
     updateGrid = PlaceCells(grid, agentArray[0], 12)
 

@@ -13,7 +13,7 @@ M = csvread('GOL.csv');
 totalCells= length*height;
 boundNum= bound*totalCells;
 unboundNum= unbound*totalCells;
-emptyNum= 1-(boundNum+ unboundNum); 
+emptyNum= 1-(boundNum+ unboundNum);
 %error catching
 if bound >1 || unbound > 1
     disp('enter a percentage value between 0 and 1')
@@ -48,36 +48,36 @@ for g=1:genNum;
         end
     end
     
-    load('S_14.mat')
-   
-    % update the grid 
-    % define the rules of the game 
+    load('S_2.mat')
+    
+    % update the grid
+    % define the rules of the game
     for i=1:length;
         for j=1:height;
-            if M(i,j)<0 
-                continue 
-            elseif neighbour(i,j)==1 %for 1 neighbour 
-                if rand<= 0.30*S_14(g,2) %generate random numbers btw 1 and 2, 50% will bind
+            if M(i,j)<0
+                continue
+            elseif neighbour(i,j)==1 %for 1 neighbour
+                if rand<= 0.30*S_2(g,2) %generate random numbers btw 1 and 2, 50% will bind
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
                 end
-            elseif neighbour(i,j)==2; 
-                if rand<=0.60*S_14(g,2);
-                    M(i,j)=1; 
-                else M(i,j)=M(i,j);
-                end 
-            elseif  neighbour(i,j)==3; 
-                if rand<= 0.80*S_14(g,2); 
+            elseif neighbour(i,j)==2;
+                if rand<=0.60*S_2(g,2);
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
-                end 
+                end
+            elseif  neighbour(i,j)==3;
+                if rand<= 0.80*S_2(g,2);
+                    M(i,j)=1;
+                else M(i,j)=M(i,j);
+                end
             elseif neighbour(i,j)==4;
-                if rand<=0.99*S_14(g,2);
+                if rand<=0.99*S_2(g,2);
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
                 end
             else neighbour(i,j)=0;
-                if rand<=0.2*S_14(g,2);
+                if rand<=0.2*S_2(g,2);
                     M(i,j)=1;
                 else M(i,j)=M(i,j);
                 end
@@ -92,17 +92,17 @@ for g=1:genNum;
     time(end+1)= counter;
     
     counter = counter + 1;
-    disp(sum(sum(M))) 
-   
+    disp(sum(sum(M)))
+    
 end
 %plot(time,cellCount)
-for bound= 0.2
-    for unbound=0.05
+for bound= 0
+    for unbound=1
         figure(2)
         plot (time, cellCount)
         xlabel ('Time points')
         ylabel ('Number of cells bound')
         hold on
-    end 
+    end
 end
 end
