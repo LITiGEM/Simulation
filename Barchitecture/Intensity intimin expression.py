@@ -52,7 +52,7 @@ def diff_eqs(y, t):
     Km = 5  # (microM/L)
     v = 10000   # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
     # its cytoplasm (1/hr)
-    n = 1 - (Intiminsurface / (2.48 * 10 ** -4))  # Representing the space available for more proteins on the surface
+    n = 1 - (Intiminsurface / (1.24))  # Representing the space available for more proteins on the surface
     # of the cell in the form of a ratio (Dimensionless)
     b = (Intiminintracellular / (Intiminintracellular + Km)) * n * v  # Rate at which the protein is transferred to the
     # surface of the cell (1/s)
@@ -110,6 +110,6 @@ if __name__ == "__main__":
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0,time_stop))
-    plt.ylim((0,0.00025))
+    plt.ylim((0,0.002))
 
     plt.show()
