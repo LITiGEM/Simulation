@@ -39,10 +39,10 @@ def diff_eqs(y, t):
     d1 = 60 / 20  # Degradation of transcript (1/hr)
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
-    a = ((400 / 2000) * (5 ** -10)) * 100  # We modelled it at 0.2 of the maximal expression rate
+    a = ((20 / 100) * (3.5 * (10 ** -1))) # We modelled it at 0.2 of the maximal expression rate
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
+    dEL222dimer_dt = a + (light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
     # Rate of transcription
     dmRNA_dt = (k2 * EL222dimer) - (d1 * mRNA) - (k3 * mRNA)
@@ -51,7 +51,7 @@ def diff_eqs(y, t):
     #Km=1
     v = 115200 / 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
     # its cytoplasm (1/hr)
-    n = 1 - (Intiminsurface / (6.48 * 10 ** -6))  # Representing the space available for more proteins on the surface
+    n = 1 - (Intiminsurface / (1.24))  # Representing the space available for more proteins on the surface
 
     dIntiminintracellular_dt = ((((Intiminintracellular)**2)*(-d2-v)*n)+(Intiminintracellular*((mRNA*k3)-(d2*Km)))+((mRNA*k3)*Km))/(Km+Intiminintracellular)
 
@@ -65,12 +65,12 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
-    t = np.linspace(0, 5, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
-    Km_array=[ 0.000005, 0.0003, 0.0009, 0.0079, 0.015, 0.026]
+    t = np.linspace(0, 3, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
+    Km_array=[ 5, 3, 1, 0.2, 0.026, 0.000005]
     #v_array=[10000,12000,14000,16000,18000,20000,22000,24000]
 
     '''Set initial species concentration values'''
-    EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
+    EL222inactive = 0.032  # Initial concentration of EL222 (microM/L)
     EL222dimer_0 = 0  # Starting concentration of EL222 bound to the promoter (microM/L)
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     Intiminintracellular_0 = 0  # Starting protein concentration (microM/L)
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     # Once we selected our range of light intensities we inputted them into our initial function to calculate the value
     # of k1 and then inputted the values of k1 into our differential equations
 
-    L_range = [70]
+    L_range = [54]
 
     for L in L_range:
         print(L)
@@ -99,12 +99,12 @@ if __name__ == "__main__":
         plt.plot(t, sol[:, 3])
 
         # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-        plt.legend(['5E-06 uM', '3E-04 uM', '9E-04 uM', '7.9E-03 uM', '1.5E-02 uM', '2.6E-02 uM'], loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.legend(['5 uM', '3 uM', '1 uM', '2E-01 uM', '2.6E-02 uM', '5E-06 uM'], loc='center left', bbox_to_anchor=(1, 0.5))
         plt.ylabel('Concentration (uM)',**asfont)
         plt.xlabel('Time (hr)',**asfont)
         #plt.title('Effect changing Km has on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
         plt.legend(loc=1, borderaxespad=0)
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-        plt.xlim((0,5))
-        plt.ylim((0, 0.000007))
+        plt.xlim((0,3))
+        plt.ylim((0, 0.35))
     plt.show()

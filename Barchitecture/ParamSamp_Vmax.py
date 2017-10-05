@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
         light_intensity = light(1545, L, 2, int(6.55))
 
-    v_array= SampleParam(510031, 150000, 10)
+    v_array= (SampleParam(510, 250, 10))*1000
     #50% of the actual value is my standard deviation
 
     #print(Km_array)
@@ -132,8 +132,9 @@ if __name__ == "__main__":
     hfont = {'fontname': 'Helvetica'}
 
     #We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-    plt.legend(v_arrayLabels, loc='center left', bbox_to_anchor=(1, 0.5))
+
     plt.ylabel('Concentration (uM)', **asfont)
+    plt.legend(v_arrayLabels, loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylim(0)
     plt.xlabel('Time (hr)', **asfont)
     plt.xlim(0, runTime)
