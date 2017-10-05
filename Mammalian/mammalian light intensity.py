@@ -31,13 +31,13 @@ def diff_eqs(y, t):
 
     """Set rate constants"""  # we made these numbers up we are now looking into fixing them and adding rate equations for the k values
 
-    k2 = 57.6  # Rate of transcription per transcript (1/hr)
-    k3 = 12  # Rate of translation (1/hr)
-    d1 = 60 / 13  # Degradation of transcription factors (1/hr)
-    d2 = 1.68  # Degradation of mRNA (1/hr)
-    d3 = 1.86  # Degradation of translated protein (1/hr)
-    a = 190.8  # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
-    b = 180  # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
+    k2 =  57.6 # Rate of transcription per transcript (1/hr)
+    k3 = 12 # Rate of translation (1/hr)
+    d1= 60/13 # Degradation of transcription factors (1/hr)
+    d2 = 1.68 # Degradation of mRNA (1/hr)
+    d3 = 1.86 # Degradation of translated protein (1/hr)
+    a = 1.08 # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
+    b = 5.76 # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
 
     # Rate of PhoCL being cleaved by light and transmembrane protein complex being released in the cytoplasm
     dTF_dt = (light_cleavage * LACE) - (d1 * TF) - (a * TF)
@@ -51,7 +51,7 @@ def diff_eqs(y, t):
     dmRNA_dt = (k2 * TF) - (d2 * mRNA) - (b * mRNA)
 
     # Rate of translation
-    Pt = 9.26 * (10 ** -6)  # Maximum concentration of Protein the cells can produce (umol/L)
+    Pt = 1.24  # Maximum concentration of Protein the cells can produce (umol/L)
     n = (1 - (P / (Pt)))
 
     dP_dt = (n * b * k3 * mRNA) - (d3 * P)
@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     '''Set initial species concentration values'''
 
-    LACE = 1.54 * (10 ** -7)  # Initial concentration of the transmembrane protein complex (units)
+    LACE = 0.025  # Initial concentration of the transmembrane protein complex (units)
     TF_0 = 0  # Starting concentration of free TF in thej cytoplasm
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     P_0 = 0  # Starting protein concentration (microM/L)
@@ -97,5 +97,5 @@ if __name__ == "__main__":
     plt.xlabel('Time (hr)', **asfont)
     plt.ticklabel_format( style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0, stop_time))
-    plt.ylim((0, 0.0000017))
+    plt.ylim((0, 1.2))
     plt.show()

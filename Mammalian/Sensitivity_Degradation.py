@@ -36,8 +36,8 @@ def diff_eqs(y, t):
     d1 = 60 / 13  # Degradation of transcription factors (1/hr)
     d2 = 1.68  # Degradation of mRNA (1/hr)
     #d3 = 1.86  # Degradation of translated protein (1/hr)
-    a = 190.8  # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
-    b = 180  # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
+    a = 1.08  # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
+    b = 5.76  # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
 
     # Rate of PhoCL being cleaved by light and transmembrane protein complex being released in the cytoplasm
     dTF_dt = (light_cleavage * LACE) - (d1 * TF) - (a * TF)
@@ -51,7 +51,7 @@ def diff_eqs(y, t):
     dmRNA_dt = (k2 * TF) - (d2 * mRNA) - (b * mRNA)
 
     # Rate of translation
-    Pt = 9.26 * (10 ** -6)  # Maximum concentration of Protein the cells can produce (umol/L)
+    Pt = 1.24  # Maximum concentration of Protein the cells can produce (umol/L)
     n = (1 - (P / (Pt)))
 
     dP_dt = (n * b * k3 * mRNA) - (d3 * P)
@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     '''Set initial species concentration values'''
 
-    LACE = 1.54 * (10 ** -7)  # Initial concentration of the transmembrane protein complex (units)
+    LACE = 0.025  # Initial concentration of the transmembrane protein complex (units)
     TF_0 = 0  # Starting concentration of free TF in thej cytoplasm
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     P_0 = 0  # Starting protein concentration (microM/L)
@@ -85,21 +85,28 @@ if __name__ == "__main__":
     d3_range = [0.0012, 0.0021, 0.0031, 0.0050, 0.077, 1.01, 1.19]
     # These are the range of light intensities who's effect was evaluated on the rate of 'k1'
 
+    d3_arrayLabels= []
+
     for i in d3_range:
         d3=i
         sol = odeint( diff_eqs, y0, t)
         plt.style.use('ggplot')
         plt.plot(t, sol[:, 2])
 
+        v1 = d3 / 3600
+        v2 = "{0:0.1E}".format(v1)
+        d3_arrayLabels.append(str(v2) + ' 1/s')
+
     """plot output"""
     # We set the font we wanted for our graphs
     asfont = {'fontname': 'Arial'}
 
     # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-    plt.legend(['3.3E-07 1/s', '5.8E-07 1/s', '1.4E-06 1/s', '1E-05 1/s', '2E-05 1/s', '2.8E-04 1/s', '3.3E-04 1/s'], loc='bottom left', bbox_to_anchor=(1, 0.5))
+    plt.legend(d3_arrayLabels, loc='center left', bbox_to_anchor=(1, 0.5))
+    #plt.legend(['3.3E-07 1/s', '5.8E-07 1/s', '1.4E-06 1/s', '1E-05 1/s', '2E-05 1/s', '2.8E-04 1/s', '3.3E-04 1/s'], loc='bottom left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)', **asfont)
     plt.xlabel('Time (hr)', **asfont)
     plt.ticklabel_format( style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0, stop_time))
-    plt.ylim((0, 0.00001))
+    #plt.ylim((0, 0.00001))
     plt.show()
