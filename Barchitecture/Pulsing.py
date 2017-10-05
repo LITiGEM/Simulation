@@ -45,7 +45,7 @@ def diff_eqs(y, t):
     d1 = 60/300 # Degradation of transcript (1/hr)
     d2 = 60/20 # Degradation of protein (Half-life of E.coli) (1/hr)
     d3= 60/20 #half-life of intimin (1/hr)
-    a = ((400 / 2000) * (5 * (10 ** -10))) / 100  # Basal promoter expression
+    a = ((20 / 100) * (3.5 * (10 ** -1))) # Basal promoter expression
     light_pulsing = pulsing(t)
 
     # Rate of EL222 being activated by light and binding to the promoter
@@ -57,7 +57,7 @@ def diff_eqs(y, t):
     # Rate at which the protein is transferred to the surface of the cell
     Km = 5  # (microM/L)
     v = 115200/ 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to its cytoplasm (1/hr)
-    n = 1 - (S / (6.48 * 10 ** -6))  # Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
+    n = 1 - (S / (1.24))  # Representing the space available for more proteins on the surface of the cell in the form of a ratio (Dimensionless)
     b = (P / (P + Km)) * n * v  # Rate at which the protein is transferred to the surface of the cell (1/s)
 
     # Rate of translation
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     t = np.linspace(0, 15, 10000)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
-    T = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
+    T = 0.032  # Initial concentration of EL222 (microM/L)
     B_0 = 0  # Starting concentration of EL222 bound to the promoter (microM/L)
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     P_0 = 0  # Starting protein concentration (microM/L)
@@ -125,6 +125,6 @@ if __name__ == "__main__":
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
     plt.xlim((0, 15))
-    plt.ylim((0, 0.0000005))
+    #plt.ylim((0, 0.0000005))
         #plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.show()

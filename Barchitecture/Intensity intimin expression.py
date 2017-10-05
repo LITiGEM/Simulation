@@ -36,11 +36,12 @@ def diff_eqs(y, t):
 
     k2 = (108 / 25)  # Rate of transcription per transcript (1/hr)
     k3 = (3600 / 660)  # Rate of translation (1/hr)
-    d1 = 60 / 20  # Degradation of transcript (1/hr)
+    d1 = 60 / 300  # Degradation of transcript (1/hr)
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    a=((400/2000)*(5**-10))*100  #basal promoter expression
+    a = ((20 / 100) * (6 * (10 ** -6)))*1000  #basal promoter expression
+    #a=4.5**-6
 
     dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
@@ -49,9 +50,9 @@ def diff_eqs(y, t):
 
     # Rate at which the protein is transferred to the surface of the cell
     Km = 5  # (microM/L)
-    v = 115200 / 10  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
+    v = 10000   # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
     # its cytoplasm (1/hr)
-    n = 1 - (Intiminsurface / (6.48 * 10 ** -6))  # Representing the space available for more proteins on the surface
+    n = 1 - (Intiminsurface / (2.48 * 10 ** -4))  # Representing the space available for more proteins on the surface
     # of the cell in the form of a ratio (Dimensionless)
     b = (Intiminintracellular / (Intiminintracellular + Km)) * n * v  # Rate at which the protein is transferred to the
     # surface of the cell (1/s)
@@ -72,11 +73,11 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 1000  # Number of timepoints to simulate
-    time_stop = 20
+    time_stop = 10
     t = np.linspace(0, time_stop, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
-    EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
+    EL222inactive = 0.00237 # Initial concentration of EL222 (microM/L)
     EL222dimer_0 = 0  # Starting concentration of EL222 bound to the promoter (microM/L)
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     Intiminintracellular_0 = 0  # Starting protein concentration (microM/L)
@@ -87,6 +88,7 @@ if __name__ == "__main__":
 
     # Once we selected our range of light intensities we inputted them into our initial function to calculate the value
     # of k1 and then inputted the values of k1 into our differential equations
+
     L_range = [0,18,35,53,70]
 
     for L in L_range:
@@ -96,18 +98,18 @@ if __name__ == "__main__":
         sol = odeint(diff_eqs, y0, t)
         plt.style.use('ggplot')
         plt.plot(t, sol[:, 3])
-        """plot output"""
-        # We set the font we wanted for our graphs
-        asfont = {'fontname': 'Arial'}
+    """plot output"""
+    # We set the font we wanted for our graphs
+    asfont = {'fontname': 'Arial'}
 
-        # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
-        plt.legend(['0 W/$cm^2$', '18 W/$cm^2$', '35 W/$cm^2$', '53 W/$cm^2$', '70 W/$cm^2$'], loc='center left', bbox_to_anchor=(1, 0.5))
-        plt.ylabel('Concentration (uM)',**asfont)
-        plt.xlabel('Time (hr)',**asfont)
-        #plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
-        plt.legend(loc=1, borderaxespad=0)
-        plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
-        plt.xlim((0,time_stop))
-        plt.ylim((0,0.00000035))
+    # We then annotaed our graphs axis, legends and set minimum and maximum ranges for them
+    plt.legend(['0 W/$cm^2$', '18 W/$cm^2$', '35 W/$cm^2$', '53 W/$cm^2$', '70 W/$cm^2$'], loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.ylabel('Concentration (uM)',**asfont)
+    plt.xlabel('Time (hr)',**asfont)
+    #plt.title('Effect of light intensity on the rate of intimin expression on the cell surface ', fontsize=10, y=1.08)
+    plt.legend(loc=1, borderaxespad=0)
+    plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
+    plt.xlim((0,time_stop))
+    plt.ylim((0,0.00025))
 
     plt.show()

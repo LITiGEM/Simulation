@@ -54,7 +54,7 @@ def diff_eqs(y, t):
     k3 = 12 # Rate of translation (1/hr)
     d1= 60/13 # Degradation of transcription factors (1/hr)
     d2 = 1.68 # Degradation of mRNA (1/hr)
-    d3 = 1.86 # Degradation of translated protein (1/hr)
+    #d3 = 1.86 # Degradation of translated protein (1/hr)
     a = 190.8 # Rate of transport of TF from cytoplasm to the nucleus (1/hr)
     b = 180 # Rate of transport of mRNA from nucleus to cytoplasm (1/hr)
 
@@ -82,7 +82,7 @@ def diff_eqs(y, t):
 
 if __name__ == "__main__":
     time_steps = 100000 # Number o timepoints to simulate
-    stop_time = 6
+    stop_time = 12
     t = np.linspace(0, stop_time, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
@@ -101,15 +101,21 @@ if __name__ == "__main__":
     for L in L_range:
         print(L)
         light_cleavage = cleavage(7.95,L,1)
-        sol = odeint(diff_eqs, y0, t)
 
+    d3_array = [ 0.23, 1.86]
+
+    for i in d3_array:
+        d3 = i
+        sol = odeint(diff_eqs, y0, t)
+        sol = odeint(diff_eqs, y0, t)
         plt.style.use('ggplot')
         #plt.plot(t, sol[:, 0])
         #plt.plot(t, sol[:, 1])
         plt.plot(t, sol[:, 2])
 
     asfont = {'fontname': 'Arial'}
-    plt.legend(['Free $TF_C$', '$mRNA_N$', 'RFP Protein'], loc='center left', bbox_to_anchor=(1, 0.5))
+    #plt.legend(['Free $TF_C$', '$mRNA_N$', 'RFP Protein'], loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.legend(['Optmized', 'Unoptimized'], loc='center left', bbox_to_anchor=(1, 0.5))
     #plt.legend(['Free $TF_C$'], bbox_to_anchor=(1, 0.5))
     #plt.legend(['0 W/$m^2$', '0.005 W/$m^2$', '0.01 W/$m^2$', '0.015 W/$m^2$', '0.02 W/$m^2$'], loc='lower right')
     #plt.title('Rate kinetics of mammalian cellular mechanisms with a light intensity of 0.02 W/$m^2$', fontsize=10, y=1.08)
@@ -117,7 +123,7 @@ if __name__ == "__main__":
     plt.xlabel('Time (hr)',**asfont)
     plt.xlim((0,stop_time))
     #plt.ylim((0,0.000000005))
-    plt.ylim((0,0.00000155))
+    #plt.ylim((0,0.00000155))
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 
     #plt.title('Figure 2: Effect light intensity has on the rate of RFP expression', fontsize=10, y=1.08)

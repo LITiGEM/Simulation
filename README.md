@@ -3,6 +3,7 @@
 
 This repository contains all the modelling code of the UCL 2017 iGEM team
 
+
 ##File Description
 
 The UCL iGEM 2017 team developed a range of models that simulate and optimize parameters that affect cellular mechanisms in different areas of light induced technologies (LIT). All the work will be presented in November 2017 at the international Jamboree in Boston. 
@@ -11,6 +12,7 @@ This file contains the following models:
 LIT Barchitecture Model (LEGIT Model) 
 Optimization of rate kinetics for the expression of a surface protein (intimin).
 The construct is induced with blue light (450 nm), the effect of light induction is tested in 2 ways: light intensity used and light pulsing. This directory includes parameter optimisation (i.e. Sensitivity Analysis and Parameter Sampling) as well as a cost analysis. 
+
 - 10minplse.py
 - Costing_BestLightIntensity.py
 - Costing_Optimized.py
@@ -24,18 +26,19 @@ The construct is induced with blue light (450 nm), the effect of light induction
 - Rate kinetics.py
 - Vmax sensitivity.py
 
-
 Game of LIT Model (GOLIT Model) 
 Variation of Conway’s Game of Life
 Visual representation of the cell adhesion; where the two binding partners SpyTag and SpyCatcher bind to each other. Implementation of genetic algorithm to determine the optimal starting condition before running the game. 
+
 - GameOfLit.m
-- LOGO.m
 - run_GameOfLit.m
+- LOGO.m
 - run_LOGO.m
 - LIT.py
 
 LIT Mammalian Cells Model (LAME Model) 
 Optimization of rate kinetics for the photoactivation of the dCAS9 – p65 construct. The system is induced by the photo cleaving of the linker PhoCl with violet light. 
+
 - 2hourpulses.py
 - Costing_BestLightIntensities.py
 - Costing_Optimized.py

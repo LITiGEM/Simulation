@@ -40,10 +40,10 @@ def diff_eqs(y, t):
     k2 = (108 / 25)  # Rate of transcription per transcript (1/hr)
     k3 = (3600 / 660)  # Rate of translation (1/hr)
     d1 = 60 / 300  # Degradation of transcript (1/hr)
-    d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
+    d2 = 60 / 10  # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    a=((400/2000)*(5*(10**-10)))/100 #Basal promoter expression
+    a = ((20/100)*(3.5*(10**-1))) #Basal promoter expression
 
     dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
 
@@ -52,9 +52,9 @@ def diff_eqs(y, t):
 
     # Rate at which the protein is transferred to the surface of the cell
     Km = 5 # (microM/L)
-    v = 15000  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
+    v = 10000  # Based on the rate at which mRNA is transferred from within the nucleus of a mammalian cell to
     # its cytoplasm (1/hr)
-    n = 1 - (Intiminsurface / (2.48 ** -4))  # Representing the space available for more proteins on the surface
+    n = 1 - (Intiminsurface / (1.24))  # Representing the space available for more proteins on the surface
     # of the cell in the form of a ratio (Dimensionless)
     b = ((Intiminintracellular*v) / (Intiminintracellular + Km)) * n   # Rate at which the protein is transferred to the
     # surface of the cell (1/s)
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     t = np.linspace(0, time_stop,time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
-    EL222inactive = 2.37 * (10 ** -4)  # Initial concentration of EL222 (microM/L)
+    EL222inactive = 0.032  # Initial concentration of EL222 (microM/L)
     EL222dimer_0 = 0  # Starting concentration of EL222 bound to the promoter (microM/L)
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     Intiminintracellular_0 = 0  # Starting protein concentration (microM/L)
@@ -87,14 +87,21 @@ if __name__ == "__main__":
     y0 = [EL222dimer_0, mRNA_0, Intiminintracellular_0, Intiminsurface_0]
 
     # We used the optimum light intensity to find the rate limiting step within its rate kinetics
-    L_range = [60]
+
+    L_range = [54]
 
     for L in L_range:
         #print(L)
         light_intensity = light(1545, L, 2, int(6.554))
         #print(light_intensity)
-        sol = odeint(diff_eqs, y0, t)
+    #Km_array = [ 5, 1]
 
+    #Km_array = [ 0.00000031, 5]
+    #Km=5
+
+    #for i in Km_array:
+     #   Km = i
+        sol = odeint(diff_eqs, y0, t)
         """plot output"""
         # We set the font we wanted for our graphs
         asfont = {'fontname':'Arial'}
@@ -106,12 +113,13 @@ if __name__ == "__main__":
 
     #plt.legend(['EL222 Dimer', 'mRNA', 'Translated Intimin', 'Surface expressed Intimin'],loc= 'center left', bbox_to_anchor=(1, 0.5))
     plt.legend(['Surface expressed Intimin'],loc= 'center left', bbox_to_anchor=(1, 0.5))
+    #plt.legend(['Optimized conditions', 'Unoptimized conditions'], loc='center left', bbox_to_anchor=(1, 0.5))
     plt.ylabel('Concentration (uM)',**asfont)
     plt.xlabel('Time (hr)',**asfont)
     #plt.title('Current transport of intimin to the cell surface', fontsize=10, y=1.08)
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0,time_stop))
-    #plt.ylim((0,0.00003))
+    plt.ylim((0,0.25))
 
 plt.show()
