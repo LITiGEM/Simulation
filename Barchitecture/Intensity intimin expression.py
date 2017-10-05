@@ -40,7 +40,7 @@ def diff_eqs(y, t):
     d2 = 60 / 20  # Degradation of protein (Half-life of E.coli) (1/hr)
 
     # Rate of EL222 being activated by light, dimerizing and binding to the promoter
-    a = ((20 / 100) * (6 * (10 ** -6)))*1000  #basal promoter expression
+    a = ((20 / 100) * (3.5 * (10 ** -1))) #basal promoter expression
     #a=4.5**-6
 
     dEL222dimer_dt = a+(light_intensity * (EL222inactive) ** 2) - (k2 * EL222dimer)
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     t = np.linspace(0, time_stop, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
     '''Set initial species concentration values'''
-    EL222inactive = 0.00237 # Initial concentration of EL222 (microM/L)
+    EL222inactive = 0.032 # Initial concentration of EL222 (microM/L)
     EL222dimer_0 = 0  # Starting concentration of EL222 bound to the promoter (microM/L)
     mRNA_0 = 0  # Starting mRNA concentration (microM/L)
     Intiminintracellular_0 = 0  # Starting protein concentration (microM/L)
@@ -110,6 +110,6 @@ if __name__ == "__main__":
     plt.legend(loc=1, borderaxespad=0)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     plt.xlim((0,time_stop))
-    plt.ylim((0,0.002))
+    #plt.ylim((0,0.002))
 
     plt.show()
