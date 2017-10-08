@@ -63,7 +63,7 @@ def diff_eqs(y, t):
     # Rate of expression of the protein on the surface of the cell
     dIntiminsurface_dt = (b * Intiminintracellular) -d2*(Intiminsurface)
 
-    print(Intiminintracellular)
+    print(Intiminsurface)
 
     """Repack solution in same order as y"""
 
@@ -72,7 +72,7 @@ def diff_eqs(y, t):
     return sol
 
 if __name__ == "__main__":
-    time_steps = 1000  # Number of timepoints to simulate
+    time_steps = 100# Number of timepoints to simulate
     time_stop = 10
     t = np.linspace(0, time_stop, time_steps)  # Set the time frame (start_time, stop_time, step) time frames are equally spaced within the two limits
 
@@ -91,10 +91,11 @@ if __name__ == "__main__":
 
     L_range = [0,18,35,53,70]
 
+
     for L in L_range:
         print(L)
         light_intensity = light(1545, L, 2, int(6.554))
-        #print(light_intensity)
+        print(light_intensity)
         sol = odeint(diff_eqs, y0, t)
         plt.style.use('ggplot')
         plt.plot(t, sol[:, 3])

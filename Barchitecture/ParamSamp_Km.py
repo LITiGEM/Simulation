@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
         light_intensity = light(1545, L, 2, int(6.55))
 
-    Km_array= (SampleParam( 167, 80, 6))*100
+    Km_array= (SampleParam( 167, 80, 6))/100
 
     print(Km_array)
 

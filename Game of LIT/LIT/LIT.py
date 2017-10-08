@@ -32,7 +32,8 @@ class RuleSet:
 
 def GenProb(numParam):
 
-    probArray = np.random.rand(1,numParam)
+    probArray = np.random.rand(1, numParam)
+    # 1 dimensional array
 
     return probArray
 
@@ -247,6 +248,7 @@ def FindCoverTime(agent, grid, ruleSet):
     return genNum
 
 
+
 def FindBestAgent(agentArray, grid, ruleSet):
 
     #initiating the variables to return, those values do not matter
@@ -288,12 +290,13 @@ if __name__ == "__main__":
     #reinitialise empty grid
     zeroGrid = NewGrid(50,50)
     #DrawGrid(zeroGrid)
-    print("finding cover time")
+    print("Finding cover time")
     gen = FindCoverTime(agentArray[0],zeroGrid, ruleSet)
     zeroGrid = NewGrid(50,50)
-    print("Finding best agent")
+
     bestAgent, bestGen = FindBestAgent(agentArray,zeroGrid,ruleSet)
 
     print(bestGen)
+    print("Finding the probabilities/ finding best agent")
 
     print(bestAgent.none, bestAgent.one, bestAgent.two, bestAgent.three, bestAgent.four)
